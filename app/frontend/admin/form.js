@@ -4,8 +4,8 @@ import { useState } from 'react'
 import { z } from 'zod'
 import Link from "next/link"
 
-import Upload from './form/phots_Upload/photo'
-import Details from './form/phots_Upload/details'
+import Upload from './admin/form/phots_Upload/photo'
+import Details from './admin/form/phots_Upload/details'
 
 
 const str = z.object({

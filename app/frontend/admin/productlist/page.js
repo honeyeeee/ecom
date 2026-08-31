@@ -4,7 +4,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import Buttons from "./actions/actions";
-import Comp from "../componente/comp";
+import Comp from "../admin/componente/comp";
 // import { id } from "zod/locales";
 
 

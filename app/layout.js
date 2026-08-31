@@ -1,6 +1,19 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono  ,Poppins ,Cantata_One} from "next/font/google";
 import "./globals.css";
 
+
+// Cantata_One ko setup karein (space ki jagah underscore '_' use hota hai)
+const cantataOne = Cantata_One({
+  subsets: ["latin"],
+  weight: ["400"], // Cantata One sirf 400 weight (Regular) mein hi milta hai
+  variable: "--font-cantata", // CSS Variable Name
+})
+
+const poppins = Poppins({
+  subsets:["latin"],
+   weight: ["700", "800"],
+   variable:"--font-popins"
+})
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -20,7 +33,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${cantataOne.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

@@ -2,6 +2,7 @@ import User from "../../db/userSchema";
 import connectDb from "../../db/db";
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import { NextResponse } from "next/server";
 
 export async function POST(req) {
     try {
@@ -13,7 +14,7 @@ export async function POST(req) {
         email:body.email
     })
     if(!find){
-        return Response.json({
+        return NextResponse.json({
             message:'this email is not avilable'
         },
     {
@@ -24,7 +25,7 @@ export async function POST(req) {
 
     const passwordCheck= await bcrypt.compare(body.password,find.passwordHash)
     if(!passwordCheck){
-        return Response.json({
+        return NextResponse.json({
             message:'wrong password '
         },
     {
@@ -38,7 +39,7 @@ const token = jwt.sign({
 },process.env.JWT_SECRET)
 
 if(!token){
-    return Response.json({
+    return NextResponse.json({
         message:'token is not valid'
     },
 {
@@ -46,18 +47,21 @@ if(!token){
 })
 }
 
-const response = Response.json({
+const response = NextResponse.json({
     status:200,
     message:'user find successfully'
 })
 
 response.cookies.set('token',token,{
-    httpOnly:true
+    httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 30
 })
 
 return response
     } catch (error) {
-        return Response.json({
+        return NextResponse.json({
             success:false,
             message:'user not find '
         })

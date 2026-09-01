@@ -1,4 +1,4 @@
-import Form from "./frontend/form";
+import Form from "../form"
 
 export default  function App(){
 

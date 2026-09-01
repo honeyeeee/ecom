@@ -4,8 +4,8 @@ import { useState } from 'react'
 import { z } from 'zod'
 import Link from "next/link"
 
-import Upload from './admin/form/phots_Upload/photo'
-import Details from './admin/form/phots_Upload/details'
+import Upload from './form/phots_Upload/photo'
+import Details from './form/phots_Upload/details'
 
 
 const str = z.object({
@@ -98,7 +98,7 @@ export default function Form() {
                 </h1>
 
                 <Link
-                    href="/frontend/productlist"
+                    href="/frontend/admin/productlist"
                     className="px-4 py-2 rounded-lg bg-emerald-800 hover:bg-emerald-700 text-white text-sm font-medium transition"
                 >
                     Product List

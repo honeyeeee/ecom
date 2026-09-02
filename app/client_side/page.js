@@ -1,12 +1,20 @@
 
 import Image from "next/image";
+import { cookies } from "next/headers";
 
 async function getProduct(params) {
+  const cookeStore = await cookies()
+  const token = cookeStore.get('token')
   
-  const response = await fetch("http://localhost:3000/backend/produtlist");
+  const response = await fetch("http://localhost:3000/backend/produtlist",{
+    headers:{
+      Cookie:token.value
+    }
+  });
       const data = await response.json();
       console.log(data)
-
+console.log('frontend cookies', cookeStore.get('token'))
+// console.log( 'forntend cookie mili',cookieStore.getAll())
 return data.ans
 }
 

@@ -1,10 +1,11 @@
 
 import Image from "next/image";
 import { cookies } from "next/headers";
-
+// import Buttons from "@/app/frontend/admin/productlist/actions/actions";
+import AddToCart from "./buttons";
+const cookeStore = await cookies()
+const token = cookeStore.get('token')
 async function getProduct(params) {
-  const cookeStore = await cookies()
-  const token = cookeStore.get('token')
   
   const response = await fetch("http://localhost:3000/backend/produtlist",{
     headers:{
@@ -17,6 +18,9 @@ console.log('frontend cookies', cookeStore.get('token'))
 // console.log( 'forntend cookie mili',cookieStore.getAll())
 return data.ans
 }
+
+
+
 
 export default  async function ClientProduct() {
 const product = await getProduct()
@@ -106,9 +110,7 @@ const product = await getProduct()
                 {/* Buttons */}
                 <div className="grid grid-cols-2 gap-1.5 sm:gap-2 mt-3">
 
-                  <button className="py-2 sm:py-2.5 text-[10px] sm:text-sm font-medium rounded-lg border border-button text-button hover:bg-light transition">
-                    Add to Cart
-                  </button>
+                  <AddToCart product={a}   />
 
                   <button className="py-2 sm:py-2.5 text-[10px] sm:text-sm font-medium rounded-lg bg-button text-white hover:opacity-90 transition">
                     Buy Now

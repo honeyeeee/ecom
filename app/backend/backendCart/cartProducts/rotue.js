@@ -22,7 +22,7 @@ if (!findUser){
     })
 }
 
-const cartProducts = await Cart.find({userId:findUser._id}).populate('productId','name price image')
+const cartProducts = await Cart.find({userId:findUser._id}).populate('productId','Name Price Image')
 
 if (cartProducts.length===0){
     return Response.json({

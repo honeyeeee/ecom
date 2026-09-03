@@ -119,11 +119,12 @@ const product = await getProduct()
                 </div>
 
               </div>
-
+                
             </article>
           );
         })}
-
+           
+           
       </section>
     </main>
   );

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { cookies } from "next/headers";
 // import Buttons from "@/app/frontend/admin/productlist/actions/actions";
 import AddToCart from "./buttons";
+import CartButton from "./cartButton";
 const cookeStore = await cookies()
 const token = cookeStore.get('token')
 async function getProduct(params) {
@@ -47,19 +48,11 @@ const product = await getProduct()
     </div>
 
     {/* Cart */}
-    <button
-      className="relative h-11 w-11 shrink-0 rounded-xl bg-button text-white flex items-center justify-center hover:opacity-90 transition"
-    >
-      🛒
-
-      {/* Cart Count */}
-      <span className="absolute -top-1.5 -right-1.5 min-w-5 h-5 px-1 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">
-        0
-      </span>
-    </button>
+   <CartButton/>
 
   </div>
 </div>
+    
       </div>
 
       {/* Product Grid */}
@@ -119,13 +112,15 @@ const product = await getProduct()
                 </div>
 
               </div>
+              
                 
             </article>
           );
         })}
            
-           
+      
       </section>
+     
     </main>
   );
-}
+} 

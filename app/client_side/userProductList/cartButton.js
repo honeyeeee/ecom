@@ -1,12 +1,14 @@
 'use client'
 
-import { useEffect, useReducer, useRef } from "react"
+import { useEffect, useReducer, useRef, useState } from "react"
 
 import Image from "next/image";
 
 import { X, Minus, Plus, Trash2 } from "lucide-react";
 
-import useCartStore from "@/app/store/cartStore";
+import productlist from "@/app/store/cartSection/productList";
+;
+
 
 
 const initialStat = {
@@ -21,9 +23,42 @@ const initialStat = {
 
 export default function CartButton() {
 
-    const ref = useRef(null)
+  // state
+const cartItmes = productlist((state)=>state.cartItems)
+const subtotal = productlist((state)=>state.subtotal)
+const productsNumber = productlist((state)=>state.productsNumber)
+const cartProdu = productlist((state)=> state.cartProdu)
+// actions
+const  products = productlist((state)=>state.products)
+const productLength = productlist((state)=>state.productLength)
+const removeFromCartFrontend = productlist((state)=>state.removeFromCartFrontend)
+const removeFrontend =productlist((state)=>state.removeFrontend)
+const deleteCartProduct = productlist((state)=>state.deleteCartProduct)
 
-    const cartItems = useCartStore((state) => state.cartItems)
+const list = productlist((state)=>state.list)
+
+  const [items , setitems] = useState([])
+
+
+
+
+   useEffect(() => {
+
+    async function fetchCount() {
+        await list()
+        
+        console.log( 'thi is cartprodu', cartProdu)
+
+    }
+
+    fetchCount()
+
+}, [])
+
+
+
+
+
 
 
     function reducer(state, action) {
@@ -40,20 +75,6 @@ export default function CartButton() {
                 return {
                     ...state,
                     cartOpen: false
-                }
-
-            case "increase":
-                return {
-                    ...state,
-                    product: action.payload
-                }
-
-            case 'subtotal':
-                return {
-                    ...state,
-                    subTotal: state.product.reduce((total, a) => {
-                        return total + (a.productId.Price * a.quantity)
-                    }, 0)
                 }
 
             default:
@@ -75,12 +96,7 @@ export default function CartButton() {
 
             const response = await data.json()
 
-            console.log(
-                'array products ',
-                response.products[0].productId.Image[0]
-            )
-
-            // console.log('array products ' ,response.products)
+        
 
             return response.products
 
@@ -104,29 +120,17 @@ export default function CartButton() {
             <button
                 className="relative h-11 w-11 shrink-0 rounded-xl bg-button text-white flex items-center justify-center hover:opacity-90 transition shadow-sm"
                 onClick={async () => {
-
-                    const produts = await getproduct()
-
                     dispatch({
-                        type: 'showCart'
+                        type:"showCart"
                     })
-
-                    dispatch({
-                        type: 'increase',
-                        payload: produts
-                    })
-
-                    dispatch({
-                        type: 'subtotal'
-                    })
-
+                    products()
                 }}
             >
 
                 🛒
 
                 <span className="absolute -top-1.5 -right-1.5 min-w-5 h-5 px-1 rounded-full bg-accent text-white text-[10px] font-bold flex items-center justify-center border-2 border-body">
-                    {cartItems.length}
+                    {productsNumber}
                 </span>
 
             </button>
@@ -154,8 +158,8 @@ export default function CartButton() {
                         </h1>
 
                         <h2 className="mt-1 text-sm text-muted">
-                            {cartItems.length}{" "}
-                            {cartItems.length === 1 ? "Product" : "Products"}
+                            {productsNumber}{" "}
+                            {productsNumber === 1 ? "Product" : "Products"}
                         </h2>
 
                     </div>
@@ -187,8 +191,8 @@ export default function CartButton() {
 
                     <div className="space-y-3">
 
-                        {state.product.map((a, i) => {
-
+                        {cartItmes.map((a, i) => {
+                              
                             return (
 
                                 <div
@@ -260,7 +264,15 @@ export default function CartButton() {
 
                                     {/* REMOVE BUTTON */}
 
-                                    <button
+                                    <button onClick={ async ()=>{
+                                        const del=  await deleteCartProduct(a._id)
+                                        if(del.success){
+                                            // await products()
+                                            removeFromCartFrontend()
+                                            removeFrontend()
+                                            // await productLength()
+                                        }
+                                    }}
                                         className="absolute right-3 top-3 w-8 h-8 flex items-center justify-center rounded-full text-muted hover:bg-red-50 hover:text-red-500 transition"
                                     >
                                         <Trash2 size={16} />
@@ -300,7 +312,7 @@ export default function CartButton() {
 
 
                         <h1 className="font-poppins font-bold text-xl text-text">
-                            ₹{state.subTotal.toLocaleString("en-IN")}
+                            ₹{subtotal.toLocaleString("en-IN")}
                         </h1>
 
                     </div>

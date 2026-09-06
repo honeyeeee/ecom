@@ -1,6 +1,7 @@
 
 import Image from "next/image";
 import { cookies } from "next/headers";
+import productlist from "@/app/store/cartSection/productList";
 // import Buttons from "@/app/frontend/admin/productlist/actions/actions";
 import AddToCart from "./buttons";
 import CartButton from "./cartButton";
@@ -22,8 +23,9 @@ return data.ans
 
 
 
-
 export default  async function ClientProduct() {
+
+
 const product = await getProduct()
 
   return (

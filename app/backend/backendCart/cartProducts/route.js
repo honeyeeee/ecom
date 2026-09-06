@@ -18,7 +18,9 @@ const findUser = await User.findById(user,{
 
 if (!findUser){
     return Response.json({
-        message:'you are not a real user bro '
+        message:'you are not a real user bro ',
+        products:[],
+        status:200
     })
 }
 

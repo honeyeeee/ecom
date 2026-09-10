@@ -11,19 +11,16 @@ import productlist from "@/app/store/cartSection/productList";
 
 
 
-const initialStat = {
-
-    cartOpen: false,
-
-    product: [],
-
-    subTotal: 0
-
-}
 
 export default function CartButton() {
 
   // state
+const cartOpen= productlist((state)=>state.cartOpen)
+const openCart=productlist((state)=>state.openCart)
+const closeCart= productlist((state)=>state.closeCart)
+
+const sameName=productlist((state)=>state.sameName)
+
 const cartItmes = productlist((state)=>state.cartItems)
 const subtotal = productlist((state)=>state.subtotal)
 const productsNumber = productlist((state)=>state.productsNumber)
@@ -38,25 +35,34 @@ const deleteCartProduct = productlist((state)=>state.deleteCartProduct)
 const list = productlist((state)=>state.list)
 
   const [items , setitems] = useState([])
+console.log('ye hai product list  ', productlist)
+const sta = productlist.getState()
+
+const initialStat = {
+
+    cartOpen: false,
+
+    product: [],
+
+    subTotal: 0
+
+}
 
 
 
+//    useEffect(() => {
 
-   useEffect(() => {
+//     async function fetchCount() {
+//         await list()
+//         // console.log( 'this is cartprodu', cartProdu)
+//     }
 
-    async function fetchCount() {
-        await list()
-        
-        console.log( 'thi is cartprodu', cartProdu)
+//     fetchCount()
 
-    }
-
-    fetchCount()
-
-}, [])
+// }, [])
 
 
-
+console.log('ye hai cartprodu',cartProdu)
 
 
 
@@ -120,10 +126,10 @@ const list = productlist((state)=>state.list)
             <button
                 className="relative h-11 w-11 shrink-0 rounded-xl bg-button text-white flex items-center justify-center hover:opacity-90 transition shadow-sm"
                 onClick={async () => {
-                    dispatch({
-                        type:"showCart"
-                    })
-                    products()
+                  const ans =   openCart()
+                console.log(ans)
+                console.log('ye value hai open ki ',cartOpen)
+                   await  products()
                 }}
             >
 
@@ -140,7 +146,7 @@ const list = productlist((state)=>state.list)
 
             <div
                 className={`fixed top-0 right-0 h-screen w-[500px] max-w-full bg-body border-l border-border z-10 shadow-2xl flex flex-col transition-transform duration-300 ${
-                    state.cartOpen
+                    cartOpen
                         ? "translate-x-0"
                         : "translate-x-full"
                 }`}
@@ -170,11 +176,8 @@ const list = productlist((state)=>state.list)
                     <button
                         className="absolute top-5 right-5 h-9 w-9 rounded-full flex items-center justify-center text-muted hover:bg-light hover:text-text transition"
                         onClick={() => {
-
-                            dispatch({
-                                type: "closeCart"
-                            })
-
+                       const close =     closeCart()
+                       console.log(close)
                         }}
                     >
 
@@ -270,7 +273,9 @@ const list = productlist((state)=>state.list)
                                             // await products()
                                             removeFromCartFrontend()
                                             removeFrontend()
+                                            sameName()
                                             // await productLength()
+
                                         }
                                     }}
                                         className="absolute right-3 top-3 w-8 h-8 flex items-center justify-center rounded-full text-muted hover:bg-red-50 hover:text-red-500 transition"

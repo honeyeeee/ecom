@@ -5,7 +5,8 @@
   /* 🌿 Green Theme */
   --color-button: #064E3B;
   --color-accent: #059669;
-  --color-body: #F5F1E8;
+  --color-body: #F1E5D3;
+  --color-head:#816447;
   --color-light: #ECFDF5;
   --color-border: #A7F3D0;
   --color-text: #022C22;
@@ -14,4 +15,6 @@
   /* Fonts */
   --font-poppins: var(--font-poppins);
   --font-cantata: var(--font-cantata);
+  --font-playwrite: var(--font-playwrite);
+
 }

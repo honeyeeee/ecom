@@ -11,15 +11,18 @@ async function fetchCart(params) {
 }
 
 
+
+
 const productlist = create((set)=>(
-    console.log('hit or not'),
+    
     {
     
     cartItems:[],
     subtotal:0,
     productsNumber:0,
     cartProdu:[],
-
+    cartOpen: false,
+    nameChanger:false,
 
     products : async ()=>{
         const product= await fetchCart()
@@ -74,7 +77,7 @@ const productlist = create((set)=>(
     },
     removeFrontend : (id)=>{
          set((state)=> {
-                  const update = state.cartItems.filter(a=>a.id !==id) 
+                  const update = state.cartProdu.filter(a=>a.id !==id) 
                   const reduce = update.length
             return{
                 cartProdu:update,
@@ -85,8 +88,28 @@ const productlist = create((set)=>(
          )
     },
 
+
+    // cart foonted button section 
+
+     openCart:()=>  set({
+        cartOpen:true
+        
+     }),
+
+     closeCart: ()=> set({
+        cartOpen:false
+        
+     }),
     
 
+    //  
+    changeName:()=> set({
+        nameChanger:true
+    }),
+
+    sameName:()=>set({
+        nameChanger:false
+    })
     
 }))
 export default productlist

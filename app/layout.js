@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono  ,Poppins ,Cantata_One  } from "next/font/google";
+import { Geist, Geist_Mono  ,Poppins ,Cantata_One   } from "next/font/google";
 import "./globals.css";
 
 
@@ -23,6 +23,7 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
 
 
 

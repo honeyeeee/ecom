@@ -10,6 +10,7 @@ export async function GET(request){
 const verify = new TextEncoder().encode(process.env.JWT_SECRET)
 const {payload} = await jwtVerify(token,verify)
 
+
 const user = payload.id
 
 const findUser = await User.findById(user,{

@@ -3,6 +3,8 @@ import connectDb from "../../db/db"
 
 
 export async function DELETE(request,{params}) {
+
+    
     try {
           await connectDb()
     const {id} = await params

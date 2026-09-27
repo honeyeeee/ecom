@@ -152,6 +152,7 @@ alt="model"
 
 
 
+{/* category section */}
 
       <section className=" min-h-screen bg-[#F1E5D3]">
 
@@ -323,7 +324,7 @@ alt="model"
  
    <section className=" h-screen overflow-hidden bg-body">
 <div className=" h-full w-full  flex flex-col gap-8"
-style={{backgroundImage:"url('/arrival/image.png')"}}
+// style={{backgroundImage:"url('/arrival/image.png')"}}
 >
   {/* parent text div */}
   <div className="w-full min-h-[20%] pt-[4rem] pb-8  ">

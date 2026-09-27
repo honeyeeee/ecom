@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import Comp from "../../admin/componente/comp";
+// import Comp from "../../admin/componente/comp";
+import Comp from "../../componente/comp";
 import { useState } from "react";
 
 export default function Buttons({ id }) {

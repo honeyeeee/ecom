@@ -9,6 +9,8 @@ export async function middleware(request) {
     const cookie = request.cookies.get('token')?.value
     const isAdmine = pathname.startsWith("/frontend/admin")
 const isUser = pathname.startsWith("/client_side")
+
+
     if( (isAdmine || isUser) &&  !cookie){
         return NextResponse.json({
             message:'token not avilable',

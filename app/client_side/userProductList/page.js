@@ -2,13 +2,26 @@
 import Image from "next/image";
 import { cookies } from "next/headers";
 import productlist from "@/app/store/cartSection/productList";
-// import Buttons from "@/app/frontend/admin/productlist/actions/actions";
+import Link from "next/link";
 import AddToCart from "./buttons";
 import CartButton from "./cartButton";
 const cookeStore = await cookies()
 const token = cookeStore.get('token')
-async function getProduct(params) {
+async function getProduct(categoryName) {
+
+  // this is for one server req for different purpose
+ if(categoryName){
+  const response = await fetch(`http://localhost:3000/backend/produtlist?category=${categoryName}`,{
+    headers:{
+      Cookie:token.value
+    }
+  });
+const data = await response.json()
+console.log('ye hia category wala data ',data)
+return data.ans || []
   
+ }
+      
   const response = await fetch("http://localhost:3000/backend/produtlist",{
     headers:{
       Cookie:token.value
@@ -18,15 +31,19 @@ async function getProduct(params) {
       console.log(data)
 console.log('frontend cookies', cookeStore.get('token'))
 // console.log( 'forntend cookie mili',cookieStore.getAll())
-return data.ans
+return data.ans || []
 }
 
 
 
-export default  async function ClientProduct() {
+export default  async function ClientProduct({searchParams} ) {
 
+  
+  const resolve = await searchParams
+const productCategory = resolve?.category
+console.log(productCategory)
 
-const product = await getProduct()
+const product = await getProduct(productCategory)
 
   return (
     <main className="min-h-screen bg-body px-3 py-5 sm:px-5 md:px-8 lg:px-10">
@@ -59,66 +76,64 @@ const product = await getProduct()
 
       {/* Product Grid */}
       <section className="w-full max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5 lg:gap-6">
+        
+       {product.map((a, i) => {
 
-        {product.map((a, i) => {
-          return (
-            <article
-              key={a._id || i}
-              className="bg-white rounded-xl sm:rounded-2xl border border-border overflow-hidden shadow-sm hover:shadow-md transition duration-200"
-            >
+    const slug = a.name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "");
 
-              {/* Product Image */}
-              <div className="relative w-full aspect-square bg-light overflow-hidden">
+    return (
+        <article
+            key={a._id || i}
+            className="bg-white rounded-xl sm:rounded-2xl border border-border overflow-hidden shadow-sm hover:shadow-md transition duration-200"
+        >
 
-                <Image
-                  src={a.Image[0]}
-                  fill
-                  className="object-contain p-2 sm:p-4 transition duration-300 hover:scale-105"
-                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
-                  alt={a.Name || "Product Image"}
-                />
+            <Link href={`/client_side/orderPage/${slug}/${a._id}`}>
 
-                {/* Category */}
-                {a.Category && (
-                  <span className="absolute top-2 left-2 sm:top-3 sm:left-3 text-[9px] sm:text-xs font-medium bg-white/90 text-text px-2 py-1 sm:px-3 sm:py-1.5 rounded-full shadow-sm">
-                    {a.Category}
-                  </span>
-                )}
+                {/* Product Image */}
+                <div className="relative w-full aspect-square bg-light overflow-hidden">
 
-              </div>
+                    {/* image */}
 
-              {/* Product Info */}
-              <div className="p-2.5 sm:p-3">
+                    {a.productType.name && (
+                        <span className="absolute top-2 left-2 sm:top-3 sm:left-3 text-[9px] sm:text-xs font-medium bg-white/90 text-text px-2 py-1 sm:px-3 sm:py-1.5 rounded-full shadow-sm">
+                            {a.productType.name}
+                        </span>
+                    )}
 
-                {/* Name */}
-                <h2 className="text-sm sm:text-base font-semibold text-text line-clamp-2 min-h-[40px]">
-                  {a.Name}
-                </h2>
-
-                {/* Price */}
-                <div className="mt-1.5 sm:mt-2">
-                  <span className="text-base sm:text-lg font-bold text-button">
-                    ₹{a.Price}
-                  </span>
                 </div>
 
-                {/* Buttons */}
-                <div className="grid grid-cols-2 gap-1.5 sm:gap-2 mt-3">
+                {/* Product Info */}
+                <div className="p-2.5 sm:p-3">
 
-                  <AddToCart product={a}   />
+                    <h2 className="text-sm sm:text-base font-semibold text-text line-clamp-2 min-h-[40px]">
+                        {a.Name}
+                    </h2>
 
-                  <button className="py-2 sm:py-2.5 text-[10px] sm:text-sm font-medium rounded-lg bg-button text-white hover:opacity-90 transition">
+                    <div className="mt-1.5 sm:mt-2">
+                        <span className="text-base sm:text-lg font-bold text-button">
+                            ₹{a.productCategory.name}
+                        </span>
+                    </div>
+
+                </div>
+
+            </Link>
+
+            {/* Buttons */}
+            <div className="grid grid-cols-2 gap-1.5 sm:gap-2 mt-3">
+                <AddToCart product={a} />
+
+                <button className="py-2 sm:py-2.5 text-[10px] sm:text-sm font-medium rounded-lg bg-button text-white hover:opacity-90 transition">
                     Buy Now
-                  </button>
+                </button>
+            </div>
 
-                </div>
-
-              </div>
-              
-                
-            </article>
-          );
-        })}
+        </article>
+    );
+})}
            
       
       </section>

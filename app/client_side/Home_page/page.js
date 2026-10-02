@@ -151,8 +151,8 @@ alt="model"
     </section>
 
 
-
 {/* category section */}
+
 
       <section className=" min-h-screen bg-[#F1E5D3]">
 
@@ -230,7 +230,7 @@ alt="model"
   />
   
   <Link
-    href="/c"
+    href="/client_side/Home_page/mens"
     className="absolute inset-0 w-full h-full flex items-end p-6 z-10 bg-black/10" // halka dark overlay text read karne ke liye
   >
     <div className="flex justify-between w-full">

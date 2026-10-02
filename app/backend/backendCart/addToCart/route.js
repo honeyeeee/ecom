@@ -2,7 +2,7 @@ import Cart from "../../db/cart";
 import { jwtVerify } from "jose";
 
 import User from "../../db/userSchema";
-import Product from "../../db/productSchema";
+import Product from "../../db/oldproduct";
 // auth addition remaning
 
 export async function POST(request) {

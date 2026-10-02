@@ -1,60 +1,69 @@
 import mongoose from "mongoose";
 
-const productSchema = new mongoose.Schema(
-    {
-        Name: {
-            type: String,
-            required: true,
-            trim: true,
-        },
 
-        Category: {
-            type: String,
-            required: true,
-            index:true,
-            enum: [
-                "School Bag",
-                "Collage Bag",
-                "Travel Bag",
-                "Office Bag",
-                "Premium Bag",
-            ],
-        },
-
-        Gender: {
-            type: String,
-            required: true,
-            enum: ["Male", "Female", "Unisex"],
-        },
-
-        Description: {
-            type: String,
-            required: true,
-            trim: true,
-        },
-
-        Price: {
-            type: Number,
-            required: true,
-            min: 0,
-        },
-
-        Image: {
-            type: [String],
-            required: true,
-        },
-        Stock:{
-            type:Number,
-            required:true
-        }
+const productSchema = new mongoose.Schema({
+    name:{
+        type:String,
+        required:true
     },
-    {
-        timestamps: true,
-    }
-);
+    category:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Category',
+        required:true
 
-const Product =
-    mongoose.models.Product ||
-    mongoose.model("Product", productSchema);
+    },
+    productType:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'SubCategory',
+        required:true
+    },
+    productCategory:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Types',
+        required:true
+    },
+      occasion:{
+       type:mongoose.Schema.Types.ObjectId,
+        ref:"Occasion",
+        // required:true
 
-export default Product;
+    },
+    // price :Number,
+    variants:[{
+        color:{
+            type:String,
+            required:true
+        },
+        sizes:[
+            {
+            size:{
+            type:String,
+             enum: ["S", "M", "L", "XL",'2XL','3XL','4XL'],
+             required:true
+        },
+             stock:{
+                type:Number,
+                min:0,
+                default:0,
+             }
+
+            }
+          
+
+    
+    ],
+        image:[{
+            id:{
+                type:String,
+                required:true
+            },
+            url:{
+                type:String,
+                required:true
+            }
+        }]
+    }]
+})
+
+const Prod = mongoose.models.Prod ||  mongoose.model("Prod", productSchema);
+export default Prod

@@ -1,21 +1,59 @@
-import Product from "../db/productSchema"
+import Product from "../db/oldproduct"
+import Category from "../db/catergory"
+import SubCategory from "../db/subCategory"
+import Types from "../db/types"
+import Prod from "../db/productSchema"
 import connectDb from "../db/db"
 import { jwtVerify } from "jose"
-export async function GET(request) {
 
+
+export async function GET(request) {
+console.log('ye hai request from product list',request)
+const {searchParams} = new URL(request.url)
+const cat = searchParams.get('category')
+console.log('ye hai url from server',cat)
     try {
-        // console.log('this is form productlist',request)
-        // console.log('cookie hai kya ' ,request.headers.get('cookie'))
         const cooks = request.headers.get('cookie')
-console.log(cooks)
+// console.log( cooks)
+
+const token = cooks
+    ?.split('; ')
+    .find(row => row.startsWith('token='))
+    ?.split('=')[1];
+
+    console.log(token)
         const secret = new TextEncoder().encode(process.env.JWT_SECRET)
-        const {payload} =  await jwtVerify(cooks,secret)
+        const {payload} =  await jwtVerify(token || cooks,secret)
         const userRoel = payload.role
         console.log(userRoel)
-        if(userRoel ==='user'){
+        if(userRoel ==='admin'){
 await  connectDb()
-    const data = await Product.find()
-    // console.log('data from db ',data)
+console.log(cat)
+
+// tow section find first categgory then onthe bases or cat id we find product 
+if(cat){
+    const data = await SubCategory.findOne({
+        name:cat  //cat for category
+    })
+  console.log('kya ye avilable hai ',data)
+
+  const find = await Prod.find({
+    productType:data._id
+  }).populate('category')
+    .populate('productType')
+    .populate('productCategory')
+
+  return Response.json({
+   success:true,
+        ans:find
+  })
+}
+    const data = await Prod.find()
+    .populate('category')
+    .populate('productType')
+    .populate('productCategory')
+
+    console.log('data from db ',data)
 
     return Response.json({
         success:true,

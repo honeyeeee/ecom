@@ -3,6 +3,7 @@ import Category from "./category"
 import Collection from "./collection"
 import Occasion from "./occassion"
 export default function Men(){
+    
     return(
         <>
       <Category/>

@@ -1,5 +1,5 @@
 
-import Product from "../../db/productSchema"
+import Product from "../../db/oldproduct"
 import { revalidatePath } from "next/cache";
 export async function PATCH(request , {params}) {
 

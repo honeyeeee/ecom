@@ -1,6 +1,8 @@
 import { ArrowRightCircle} from "lucide-react"
-
+import Link from "next/link"
 export default  function Category(){
+      
+
     return (
         <>
            <section className="min-h-screen bg-[#F1E5D3]">
@@ -40,8 +42,9 @@ export default  function Category(){
     <ul className="grid grid-cols-4 grid-rows-2  gap-8">
 
       {/* T-Shirts */}
-      <li className="relative w-full h-[200px] overflow-hidden group bg-[#B8A991]">
-
+      
+      <li className="relative w-full h-[200px] cursor-pointer overflow-hidden group  bg-[#B8A991]">
+          
         <div className="absolute inset-0 flex items-end p-6 bg-black/10">
 
           <div className="flex justify-between items-end w-full">
@@ -64,13 +67,14 @@ export default  function Category(){
           </div>
 
         </div>
-
+          
       </li>
 
 
       {/* Shirts */}
-      <li className="relative w-full h-[200px]w-[20%] h-[200px] overflow-hidden group bg-[#B8A991]">
-
+      <li className="relative w-full h-[200px]w-[20%] h-[200px] overflow-hidden group cursor-pointer bg-[#B8A991]">
+      <Link href='/client_side/userProductList?category=shirts'>
+       
         <div className="absolute inset-0 flex items-end p-6 bg-black/10">
 
           <div className="flex justify-between items-end w-full">
@@ -93,12 +97,13 @@ export default  function Category(){
           </div>
 
         </div>
+      </Link>
 
       </li>
 
 
       {/* Trousers */}
-      <li className="relative w-full h-[200px]overflow-hidden group bg-[#B8A991]">
+      <li className="relative w-full h-[200px]overflow-hidden group bg-[#B8A991] cursor-pointer ">
 
         <div className="absolute inset-0 flex items-end p-6 bg-black/10">
 
@@ -127,7 +132,7 @@ export default  function Category(){
 
 
       {/* Jackets */}
-      <li className="relative w-full h-[200px] overflow-hidden group bg-[#B8A991]">
+      <li className="relative w-full h-[200px] overflow-hidden group bg-[#B8A991]  cursor-pointer ">
 
         <div className="absolute inset-0 flex items-end p-6 bg-black/10">
 
@@ -156,7 +161,7 @@ export default  function Category(){
 
 
       {/* Jackets */}
-      <li className="relative w-full h-[200px] overflow-hidden group bg-[#B8A991]">
+      <li className="relative w-full h-[200px] overflow-hidden group bg-[#B8A991] cursor-pointer ">
 
         <div className="absolute inset-0 flex items-end p-6 bg-black/10">
 
@@ -183,7 +188,7 @@ export default  function Category(){
 
       </li>
       {/* Jackets */}
-      <li className="relative w-full h-[200px] overflow-hidden group bg-[#B8A991]">
+      <li className="relative w-full h-[200px] overflow-hidden group bg-[#B8A991] cursor-pointer ">
 
         <div className="absolute inset-0 flex items-end p-6 bg-black/10">
 
@@ -210,7 +215,7 @@ export default  function Category(){
 
       </li>
       {/* Jackets */}
-      <li className="relative w-full h-[200px] overflow-hidden group bg-[#B8A991]">
+      <li className="relative w-full h-[200px] overflow-hidden group bg-[#B8A991] cursor-pointer ">
 
         <div className="absolute inset-0 flex items-end p-6 bg-black/10">
 
@@ -237,7 +242,7 @@ export default  function Category(){
 
       </li>
       {/* Jackets */}
-      <li className="relative w-full h-[200px] overflow-hidden group bg-[#B8A991]">
+      <li className="relative w-full h-[200px] overflow-hidden group bg-[#B8A991] cursor-pointer ">
 
         <div className="absolute inset-0 flex items-end p-6 bg-black/10">
 

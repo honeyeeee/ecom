@@ -1,14 +1,13 @@
 @import "tailwindcss";
 
-@theme {
-
-  /* 🌿 Green Theme */
+@theme inline {
+  /* 🌿 Custom Colors (Default colors delete nahi honge) */
   --color-button: #064E3B;
   --color-accent: #059669;
   --color-body: #F1E5D3;
-  --color-head:#816447;
+  --color-head: #816447;
   --color-light: #ECFDF5;
-  --color-border: #A7F3D0;
+  --color-custom-border: #A7F3D0; /* --color-border utility ko collide hone se bachane ke liye name change kiya */
   --color-text: #022C22;
   --color-muted: #047857;
   --color-bg: #2D2D2D;
@@ -17,5 +16,11 @@
   --font-poppins: var(--font-poppins);
   --font-cantata: var(--font-cantata);
   --font-playwrite: var(--font-playwrite);
+}
+.hide-scrollbar {
+  scrollbar-width: none;
+}
 
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
 }

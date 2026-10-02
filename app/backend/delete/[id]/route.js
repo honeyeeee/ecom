@@ -1,4 +1,4 @@
-import Product from "../../db/productSchema"
+import Product from "../../db/oldproduct"
 import connectDb from "../../db/db"
 
 

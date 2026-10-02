@@ -1,7 +1,7 @@
 // app/backend/uploadProduct/route.js
 import { revalidatePath } from "next/cache";
 import ImageKit from "imagekit";
-import Product from "../db/productSchema";
+import Product from "../db/oldproduct";
 import connectDb from "../db/db";
 
 const imagekit = new ImageKit({
@@ -59,7 +59,6 @@ await Product.create({
   Price:Price,
   Image:urls,
   Stock:Stock
-  
 })
 
 revalidatePath("/client_side");

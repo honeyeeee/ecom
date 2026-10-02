@@ -1,5 +1,5 @@
 "use server";
-import Product from "@/app/backend/db/productSchema";
+import Product from "@/app/backend/db/oldproduct";
 import connectDb from "@/app/backend/db/db";
 
 

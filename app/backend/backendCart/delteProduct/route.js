@@ -2,7 +2,7 @@
 import { jwtVerify } from "jose"
 import User from "../../db/userSchema"
 import Cart from "../../db/cart"
-import Product from "../../db/productSchema"
+import Product from "../../db/oldproduct"
 export async function DELETE(request){
 const cookei = request.headers.get('cookie')
 console.log('cookie mili kya ',  cookei)

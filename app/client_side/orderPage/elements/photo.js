@@ -4,20 +4,34 @@ import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Thumbs,Autoplay,Pagination } from "swiper/modules";
 
+// import lists from "@/app/store/userUiState";
 import lists from "@/app/store/userUiState";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import "swiper/css/pagination";
-import { useState } from "react";
-import { immer } from "zustand/middleware/immer";
+import { useEffect, useState } from "react";
+// import { immer } from "zustand/middleware/immer";
 
 export default function Photo({ response }) {
-  const variants = lists((state)=>state.variants)
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
-
+  // const varaintImage = lists((state)=>state.variants)
   const images = response.ans.variants[0].image;
-console.log(variants? console.log(variants.image):console.log('no image') )
+  const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const [changeImage,setimage] = useState(images)
+
+  const variant = lists((state)=>state.variants)
+  console.log('photo variants form photo.js',variant)
+  useEffect(()=>{
+    const fullImage = variant ? variant?.image:images
+    setimage(fullImage)
+  },[variant,images])
+
+  
+  
+  
+  
+
+
   return (
     <div className="w-full h-full flex items-center justify-center gap-5">
 
@@ -34,7 +48,7 @@ console.log(variants? console.log(variants.image):console.log('no image') )
           onSwiper={setThumbsSwiper}
           className="w-full h-full"
         >
-          {images.map((image, i) => (
+          {changeImage.map((image, i) => (
             <SwiperSlide key={i}>
               <div className="relative w-full h-[90px] rounded-2xl overflow-hidden border-2 border-black cursor-pointer">
                 <Image
@@ -53,6 +67,7 @@ console.log(variants? console.log(variants.image):console.log('no image') )
       {/* ================= MAIN IMAGE ================= */}
       <div className="order-2 w-[80%] h-[90%] aspect-square ">
         <Swiper
+        
           modules={[Navigation, Thumbs,Autoplay , Pagination]}
           thumbs={{
             swiper:
@@ -75,7 +90,7 @@ console.log(variants? console.log(variants.image):console.log('no image') )
           spaceBetween={4}
           className="w-full h-full"
         >
-          {images.map((image, i) => (
+          {changeImage.map((image, i) => (
             <SwiperSlide key={i}>
               <div className="relative w-full h-full flex items-center justify-center">
                 <Image

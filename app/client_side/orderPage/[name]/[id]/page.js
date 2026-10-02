@@ -22,7 +22,7 @@ export default async function ProductPage({params}) {
     })
     const response = await data.json()
     console.log(response.ans)
-    console.log(response.ans.variants?.map(ar=>ar.color))
+    console.log(response?.ans?.variants?.map(ar=>ar.color))
  
 
 

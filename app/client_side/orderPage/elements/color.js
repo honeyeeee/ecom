@@ -5,7 +5,9 @@ import lists from "@/app/store/userUiState"
 
 export default function Colors({response }){
 
+    // tish from zustad
      const selectVarinat = lists((state)=>state.setVert)
+
      const Varinat = lists((state)=>state.variants)
     const [colorObj ,setcolor ] =useState(null)
     const [disabled,setdisabled] = useState('')

@@ -33,20 +33,20 @@ export default function Photo({ response }) {
 
 
   return (
-    <div className="w-full h-full flex items-center justify-center gap-5">
+    <div className="flex h-full w-full flex-col items-center justify-center gap-3 p-3 sm:p-4">
 
       {/* ================= THUMBNAILS ================= */}
-      <div className="order-1 w-[14%] h-[70%]">
+      <div className="order-2 h-[98px] w-full">
         <Swiper
-          direction="vertical"
+          direction="horizontal"
           modules={[Navigation, Thumbs ]}
           
           navigation
           slidesPerView={4}
-          spaceBetween={16}
+          spaceBetween={8}
           watchSlidesProgress
           onSwiper={setThumbsSwiper}
-          className="w-full h-full"
+          className="w-full h-full object-contain "
         >
           {changeImage.map((image, i) => (
             <SwiperSlide key={i}>
@@ -65,7 +65,7 @@ export default function Photo({ response }) {
       </div>
 
       {/* ================= MAIN IMAGE ================= */}
-      <div className="order-2 w-[80%] h-[90%] aspect-square ">
+      <div className="order-1 h-0 min-h-0 w-full flex-1">
         <Swiper
         
           modules={[Navigation, Thumbs,Autoplay , Pagination]}

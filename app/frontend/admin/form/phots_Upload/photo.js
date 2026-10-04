@@ -6,18 +6,18 @@ export default function Upload({ images, setBag, bag }) {
 
             <label
                 id="lab"
-                className="w-[90%] h-[220px] border-2 border-dashed border-emerald-300 bg-emerald-50/40 rounded-2xl flex flex-col items-center justify-center cursor-pointer p-5 transition hover:border-emerald-500 hover:bg-emerald-50"
+                className="w-full sm:w-[90%] h-48 sm:h-56 lg:h-60 border-2 border-dashed border-custom-border bg-light/40 rounded-2xl flex flex-col items-center justify-center cursor-pointer p-3 sm:p-5 transition hover:border-accent hover:bg-light"
                 htmlFor="image"
             >
 
                 {
                     images.length > 0 && images.length <= 10
                         ?
-                        <div className="grid grid-cols-3 gap-2 w-full h-full overflow-y-auto p-1">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 w-full h-full overflow-y-auto p-1">
 
                             {images.map((a, i) =>
                                 <div
-                                    className="relative cursor-pointer rounded-lg overflow-hidden group"
+                                    className="relative cursor-pointer rounded-lg overflow-hidden group aspect-square"
                                     key={i}
                                 >
 
@@ -29,7 +29,7 @@ export default function Upload({ images, setBag, bag }) {
 
                                     <button
                                         type="button"
-                                        className="absolute top-1 right-1 w-6 h-6 flex items-center justify-center rounded-full bg-emerald-950/80 hover:bg-red-600 text-white text-xs font-semibold transition"
+                                        className="absolute top-1 right-1 w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded-full bg-button/80 hover:bg-red-600 text-white text-xs font-semibold transition"
                                         onClick={() =>
                                             setBag({
                                                 ...bag,
@@ -47,17 +47,17 @@ export default function Upload({ images, setBag, bag }) {
 
                         :
 
-                        <div className="flex flex-col items-center text-center">
+                        <div className="flex flex-col items-center text-center font-poppins">
 
-                            <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-800 text-2xl font-semibold">
+                            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-light border border-custom-border flex items-center justify-center text-accent text-xl sm:text-2xl font-semibold">
                                 ↑
                             </div>
 
-                            <p className="text-sm font-semibold text-emerald-950 mt-3">
+                            <p className="text-xs sm:text-sm font-semibold text-text mt-2 sm:mt-3">
                                 Drop your image here or browse
                             </p>
 
-                            <p className="text-xs text-emerald-700/60 mt-1">
+                            <p className="text-[10px] sm:text-xs text-muted mt-1">
                                 PNG, JPG, WEBP
                             </p>
 

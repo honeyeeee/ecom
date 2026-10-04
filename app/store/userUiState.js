@@ -3,6 +3,7 @@ import { create } from "zustand";
 const lists = create((set)=>({
     fest:[],
     variants : null,
+    products : null,
 
     itmes:async ()=>{
         // const data = await fetch('/backend/servers/occasion/lists')
@@ -19,6 +20,11 @@ const lists = create((set)=>({
          set({
             variants:variants
          })
+    },
+    setProduct:(product)=>{
+        set({
+            products:product
+        })
     }
 
 }))

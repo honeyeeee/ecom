@@ -2,8 +2,6 @@
 
 // import ImageKit from "imagekit";
 import ImageKit from "imagekit";
-// import Product from "@/app/backend/db/productSchema";
-import Product from "@/app/backend/db/productSchema";
 import connectDb from "@/app/backend/db/db";
 import Prod from "@/app/backend/db/productSchema";
 
@@ -30,14 +28,12 @@ export async function POST(req) {
 
                 if (img.size>5*1024*1024){
                     return Response.json(
-          { error: `File ${file.name} 5MB se badi hai.` },
+          { error: `File ${img.name} 5MB se badi hai.` },
           { status: 400 }  );
                 }
                 const buffer =  await img.arrayBuffer()
                 const upload = Buffer.from(buffer)
                 const binary = upload.toString('base64')
-
-                //  upload on imagekit
 
                 console.log('bat image tk pahuchi  kya')
                 const result = await imagekit.upload({
@@ -51,33 +47,53 @@ export async function POST(req) {
                     id:result.fileId
                 })
             }
-            // console.dir(imageArray,{depth:null})
 
+            const images = imageArray.map((item, index) => ({
+                ...item,
+                isThumbnail: index === 0,
+            }))
 
             const obj ={
-              
-                color:vet.color,
-                sizes:vet.sizes,
-                image:imageArray
+                color: {
+                    name: vet.color,
+                    ...(vet.hexCode ? { hexCode: vet.hexCode } : {}),
+                },
+                sizes: vet.sizes,
+                images,
             }
             productA.push(obj)
           }
 
-        //   console.log('ye hia product',productA)
-        
+        const featuresRaw = formdata.get('features')
+        const homepageTagsRaw = formdata.get('homepageTags')
+        const features = featuresRaw ? JSON.parse(featuresRaw) : []
+        const homepageTags = homepageTagsRaw ? JSON.parse(homepageTagsRaw) : []
+
+        const slug = formdata.get('slug')
+        const occasion = formdata.get('occasion')
+
          const bestData = {
                  name : formdata.get('name'),
                 category:formdata.get('category'),
                 productType:formdata.get('productType'),
-                productCategory:formdata.get('productCategory'),  
+                productCategory:formdata.get('productCategory'),
+                description: formdata.get('description') || undefined,
+                ...(slug ? { slug } : {}),
+                features,
+                basePrice: {
+                    mrp: Number(formdata.get('mrp')),
+                    sellingPrice: Number(formdata.get('sellingPrice')),
+                },
+                ...(occasion ? { occasion } : {}),
+                status: formdata.get('status') || 'draft',
+                homepageTags,
                 variants:productA
          }
 console.log('ye hai full product',bestData)
 
 
-// data sent to db bro
     await connectDb()
-    const productCreate= await Prod.create(bestData)
+    await Prod.create(bestData)
     console.log('data submitted in db')
     
         return Response.json({

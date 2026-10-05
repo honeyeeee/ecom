@@ -107,7 +107,7 @@ useEffect(()=>{
            console.log('ye hai check point ka data',nameChanger)
             
 
-        }} className="py-2 sm:py-2.5 text-[10px] sm:text-sm font-medium rounded-lg border border-button text-button hover:bg-light transition">{nameChanger ? 'Go To Cart' : "Add to Cart"}  </button>
+        }} className="py-2 sm:py-2.5 text-[10px] sm:text-sm font-medium rounded-full border border-head text-head hover:bg-head hover:text-body transition">{nameChanger ? 'Go To Cart' : "Add to Cart"}  </button>
     )
     
 }

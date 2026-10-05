@@ -1,22 +1,35 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* 🌿 Custom Colors (Default colors delete nahi honge) */
-  --color-button: #064E3B;
-  --color-accent: #059669;
+  /* 🌾 Main Colors */
   --color-body: #F1E5D3;
-  --color-head: #816447;
-  --color-light: #ECFDF5;
-  --color-custom-border: #A7F3D0; /* --color-border utility ko collide hone se bachane ke liye name change kiya */
-  --color-text: #022C22;
-  --color-muted: #047857;
+  --color-button: #816447;
+  --color-accent: #E9A18F;
+
+  /* 🤍 Light / Card */
+  --color-light: #F5EBDD;
+  --color-card: #E8D8C3;
+
+  /* 🟤 Text */
+  --color-text: #3E2C20;
+  --color-head: #76583D;
+  --color-muted: #76583D;
+
+  /* 🪵 Border */
+  --color-custom-border: #C9B39A;
+
+  /* 🟫 Dark */
   --color-bg: #2D2D2D;
+
+  /* Hover */
+  --color-button-hover: #684F38;
 
   /* Fonts */
   --font-poppins: var(--font-poppins);
   --font-cantata: var(--font-cantata);
   --font-playwrite: var(--font-playwrite);
 }
+
 .hide-scrollbar {
   scrollbar-width: none;
 }

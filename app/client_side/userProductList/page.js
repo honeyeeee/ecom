@@ -87,34 +87,49 @@ const product = await getProduct(productCategory)
     return (
         <article
             key={a._id || i}
-            className="bg-white rounded-xl sm:rounded-2xl border border-border overflow-hidden shadow-sm hover:shadow-md transition duration-200"
+            className="group flex flex-col bg-white rounded-[28px] sm:rounded-[32px] border border-head/20 overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
         >
 
             <Link href={`/client_side/orderPage/${slug}/${a._id}`}>
 
                 {/* Product Image */}
-                <div className="relative w-full aspect-square bg-light overflow-hidden">
+                <div className="relative w-full aspect-[4/4.2] bg-light overflow-hidden">
 
-                    {/* image */}
+                    {a.variants?.[0]?.images?.[0]?.url && (
+                        <Image
+                            src={a.variants[0].images[0].url}
+                            alt={a.name}
+                            fill
+                            className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                    )}
 
-                    {a.productType.name && (
-                        <span className="absolute top-2 left-2 sm:top-3 sm:left-3 text-[9px] sm:text-xs font-medium bg-white/90 text-text px-2 py-1 sm:px-3 sm:py-1.5 rounded-full shadow-sm">
-                            {a.productType.name}
+                    {a.homepageTags?.[0] && (
+                        <span className="absolute top-3 left-3 rounded-full bg-body/90 px-3 py-1 text-[9px] sm:text-[10px] font-medium uppercase tracking-wide text-head">
+                            {a.homepageTags[0].replace(/([A-Z])/g, " $1")}
                         </span>
                     )}
 
                 </div>
 
                 {/* Product Info */}
-                <div className="p-2.5 sm:p-3">
+                <div className="p-4 sm:p-5">
 
-                    <h2 className="text-sm sm:text-base font-semibold text-text line-clamp-2 min-h-[40px]">
-                        {a.Name}
+                    <h2 className="font-cantata text-lg sm:text-xl font-semibold text-text line-clamp-2">
+                        {a.name}
                     </h2>
 
-                    <div className="mt-1.5 sm:mt-2">
-                        <span className="text-base sm:text-lg font-bold text-button">
-                            ₹{a.productCategory.name}
+                    <p className="mt-1 text-[10px] uppercase tracking-[0.15em] text-head truncate">
+                        SKU: {a.variants?.[0]?.sizes?.[0]?.sku}
+                    </p>
+
+                    <p className="mt-2 line-clamp-2 text-xs sm:text-sm leading-relaxed text-text/60">
+                        {a.description}
+                    </p>
+
+                    <div className="mt-3">
+                        <span className="text-lg sm:text-xl font-bold text-head">
+                            ₹{a.basePrice?.sellingPrice}
                         </span>
                     </div>
 
@@ -123,10 +138,10 @@ const product = await getProduct(productCategory)
             </Link>
 
             {/* Buttons */}
-            <div className="grid grid-cols-2 gap-1.5 sm:gap-2 mt-3">
+            <div className="grid grid-cols-2 gap-2 p-4 pt-0 sm:p-5 sm:pt-0">
                 <AddToCart product={a} />
 
-                <button className="py-2 sm:py-2.5 text-[10px] sm:text-sm font-medium rounded-lg bg-button text-white hover:opacity-90 transition">
+                <button className="rounded-full bg-head py-2 sm:py-2.5 text-[10px] sm:text-sm font-medium text-body hover:opacity-90 transition">
                     Buy Now
                 </button>
             </div>

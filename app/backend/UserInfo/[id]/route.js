@@ -84,7 +84,11 @@ export async function POST(request, { params }) {
 
         // ----- 7. COLOR CHECK -----
         // product.variants me frontend wala color match karo
-        const variant = product.variants.find((v) => v.color === color)
+        const colorKey =
+            typeof color === "object" && color?.name ? color.name : color
+        const variant = product.variants.find(
+            (v) => v.color?.name === colorKey || v.color === colorKey
+        )
         console.log('ye hai variant', variant)
 
         if (!variant) {

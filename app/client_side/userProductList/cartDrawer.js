@@ -1,5 +1,11 @@
 "use client";
 
+/**
+ * Side cart panel — `client_side/layout.js` mein global mount
+ * Data: Zustand `productList` (server se CartSync home par bharta hai)
+ * +/- / trash buttons abhi UI only — API wire baaki hai
+ */
+
 import Image from "next/image";
 import { X, Minus, Plus, Trash2 } from "lucide-react";
 import productlist from "@/app/store/cartSection/productList";
@@ -12,8 +18,6 @@ export default function CartDrawer() {
   const productsNumber = productlist((state) => state.productsNumber);
 
   return (
-    
-
     <div
       className={`fixed top-0 right-0 h-screen w-[500px] max-w-full bg-body border-l border-border z-50 shadow-2xl flex flex-col transition-transform duration-300 ${
         cartOpen ? "translate-x-0" : "translate-x-full"
@@ -35,6 +39,7 @@ export default function CartDrawer() {
         </button>
       </div>
 
+      {/* Scrollable lines — har `a` = ek Cart document (productId populated) */}
       <div className="flex-1 overflow-y-auto px-5 py-5 pb-[190px]">
         {cartItems.length === 0 ? (
           <p className="text-center text-muted text-sm py-12">Your cart is empty.</p>
@@ -102,6 +107,7 @@ export default function CartDrawer() {
         )}
       </div>
 
+      {/* Subtotal = productList.cartProduct() mein calculate hota hai */}
       <div className="absolute bottom-0 left-0 right-0 p-5 bg-body border-t border-border shadow-[0_-10px_30px_rgba(2,44,34,0.08)]">
         <div className="flex items-center justify-between mb-4">
           <div>

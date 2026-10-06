@@ -1,5 +1,6 @@
 import { Menu, Search, UserCircle2, X } from "lucide-react";
 import Link from "next/link";
+// Cart icon — store se count; click par `CartDrawer` open
 import CartButton from "../userProductList/cartButton";
 
 const navLinks = [

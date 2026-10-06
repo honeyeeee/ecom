@@ -1,10 +1,67 @@
 import { ArrowRightCircle, Truck, Shield, CircleHelpIcon, MessageCircle, Gem, Leaf } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { cookies } from "next/headers";
+import { jwtVerify } from "jose";
+import Cart from "@/app/backend/db/cart";
+import connectDb from "@/app/backend/db/db";
+import User from "@/app/backend/db/userSchema";
+import CartSync from "./cartSync";
+
+/**
+ * SERVER: Logged-in user ka cart MongoDB se load karna
+ * Flow: cookie `token` → JWT verify → user exist? → Cart.find + populate product
+ * Guest / no token / invalid user → [] (empty cart, error throw nahi)
+ */
+async function getCartFromDb() {
+  try {
+    const cookieStore = await cookies();
+    const session = cookieStore.get("token")?.value;
+
+    // Login nahi — client par cart empty rehta hai jab tak CartSync [] na bheje
+    if (!session) {
+      return [];
+    }
+
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+    const { payload } = await jwtVerify(session, secret);
+
+    await connectDb();
+
+    // Token valid hai par user DB mein delete ho gaya ho to cart mat load karo
+    const findUser = await User.findById(payload.id, { _id: 1 }).lean();
+    if (!findUser) {
+      return [];
+    }
+
+    // Har line: userId + productId (ref) + quantity; productId populate = drawer UI ke liye detail
+    const cart = await Cart.find({ userId: findUser._id })
+      .populate(
+        "productId",
+        "name basePrice variants description Image Name Price"
+      )
+      .lean();
+
+    if (!cart || cart.length === 0) {
+      return [];
+    }
+
+    // Server Component → Client (CartSync): plain JSON, ObjectId serialize
+    return JSON.parse(JSON.stringify(cart));
+  } catch (error) {
+    // JWT galat / expired / DB error — silently empty cart (console se debug)
+    console.log(error);
+    return [];
+  }
+}
 
 export default async function Home() {
+  const cartProducts = await getCartFromDb();
+
   return (
     <>
+      {/* DB cart → Zustand (`productList.js`); sirf home mount par sync hota hai abhi */}
+      <CartSync cartProducts={cartProducts} />
       <main className="w-full min-h-screen">
         {/* 
           ========================================================================

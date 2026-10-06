@@ -1,5 +1,10 @@
 "use client";
 
+/**
+ * Navbar cart icon + item count badge
+ * Count `productList.productsNumber` se aata hai (CartSync / cartProduct se update)
+ */
+
 import { ShoppingBag } from "lucide-react";
 import productlist from "@/app/store/cartSection/productList";
 
@@ -11,7 +16,7 @@ export default function CartButton() {
     <button
       type="button"
       aria-label="Open cart"
-      onClick={() => openCart()}
+      onClick={() => openCart()} // `cartDrawer.js` — cartOpen true
       className="relative hover:opacity-60 transition"
     >
       <ShoppingBag size={21} strokeWidth={1.7} />

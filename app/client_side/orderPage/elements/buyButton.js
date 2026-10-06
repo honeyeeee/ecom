@@ -2,11 +2,11 @@
 import lists from "@/app/store/userUiState"
 import { useState } from "react"
 import { Minus, Plus, ShoppingCart } from "lucide-react"
-
+import { useRouter } from "next/navigation"
 export default function Buy({ id }) {
      const product = lists((state) => state.products)
      const [displayQty, setDisplayQty] = useState(1)
-
+     const router = useRouter()
      const datafind = async () => {
           try {
                const data = await fetch(`/backend/UserInfo/${id}`, {
@@ -21,10 +21,14 @@ export default function Buy({ id }) {
                })
 
                const response = await data.json();
+               console.log('ye hai deta form check', response)
+               return response
           } catch (error) {
                console.log(error)
           }
      }
+
+
 
      return (
           <div className="mt-8 flex w-full flex-col gap-3.5 sm:flex-row sm:items-center sm:gap-4">
@@ -56,8 +60,22 @@ export default function Buy({ id }) {
                     type="button"
                     className="flex h-12 flex-1 items-center justify-center rounded-full bg-button px-6 text-sm font-semibold tracking-wide text-light shadow-sm transition-all duration-200 hover:bg-button-hover active:scale-[0.98] cursor-pointer"
                     onClick={async () => {
+                         console.log(product.size)
+                         if (product.size === "" || undefined || null) {
+                              alert("Please select size")
+                              return
+                         }
                          console.log(product)
-                         await datafind()
+                         const result = await datafind()
+                         console.log(result.success)
+                         if (result?.success === true) {
+                              console.log('link laga agee ja ')
+                              router.push('/client_side/orderPage/address')
+                         }
+                         else {
+                              console.log('something wrong')
+                              router.push('/frontend/Login/signup')
+                         }
                     }}
                >
                     Buy Now

@@ -1,90 +1,11 @@
-import { Search, ArrowRightCircle, UserCircle2, ShoppingBag, Truck, Shield, CircleHelpIcon, MessageCircle, Gem, Leaf } from "lucide-react";
+import { ArrowRightCircle, Truck, Shield, CircleHelpIcon, MessageCircle, Gem, Leaf } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default async function Home() {
   return (
     <>
-      {/* 
-        ========================================================================
-        HERO & HEADER SECTION
-        Change Summary:
-        - Header: Added responsive padding (px-4 sm:px-8) and hid navigation links on small screens (hidden md:flex) so items don't overflow on mobile.
-        - Hero: Changed fixed heights and absolute offsets to responsive Tailwind tags (left-4 sm:left-12 lg:left-24, text-3xl sm:text-5xl lg:text-6xl).
-        - Feature icons: Added responsive gaps, text sizes, and icon sizing for mobile and tablet screens.
-        ========================================================================
-      */}
       <main className="w-full min-h-screen">
-        <header className="px-4 sm:px-8 py-4 sm:py-5 bg-body">
-          <nav className="flex items-center justify-between gap-4">
-
-            {/* Brand */}
-            <a href="/" className="text-xl sm:text-2xl font-semibold tracking-wide shrink-0">
-              Virelle
-            </a>
-
-            {/* Navigation - responsive: visible on tablet/desktop (md+), hidden on mobile */}
-            <ul className="hidden md:flex items-center gap-6 lg:gap-10 text-sm">
-              <li>
-                <a href="/" className="hover:opacity-60 transition">
-                  Home
-                </a>
-              </li>
-
-              <li>
-                <a href="/collection" className="hover:opacity-60 transition">
-                  Collection
-                </a>
-              </li>
-
-              <li>
-                <a href="/new-arrivals" className="hover:opacity-60 transition">
-                  New Arrivals
-                </a>
-              </li>
-
-              <li>
-                <a href="/deals" className="hover:opacity-60 transition">
-                  Deals
-                </a>
-              </li>
-
-              <li>
-                <a href="/about" className="hover:opacity-60 transition">
-                  About
-                </a>
-              </li>
-            </ul>
-
-            {/* Actions */}
-            <div className="flex items-center gap-4 sm:gap-5">
-              <button
-                aria-label="Search"
-                className="hover:opacity-60 transition"
-              >
-                <Search size={21} strokeWidth={1.7} />
-              </button>
-
-              <a
-                href="/account"
-                aria-label="Account"
-                className="hover:opacity-60 transition"
-              >
-                <UserCircle2 size={21} strokeWidth={1.7} />
-              </a>
-
-              <a
-                href="/cart"
-                aria-label="Shopping bag"
-                className="hover:opacity-60 transition"
-              >
-                <ShoppingBag size={21} strokeWidth={1.7} />
-              </a>
-            </div>
-
-          </nav>
-        </header>
-
         {/* 
           ========================================================================
           HERO BANNER - RESTRUCTURED

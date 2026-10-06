@@ -14,7 +14,7 @@ import { Heart } from "lucide-react";
 
 export default function Photo({ response }) {
   // DB: variants[].images[] — same as product list page
-  const defaultImages = response?.ans?.variants?.[0]?.images ?? [];
+  const defaultImages = response?.variants?.[0]?.images ?? [];
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [changeImage, setimage] = useState(defaultImages);
 
@@ -22,8 +22,12 @@ export default function Photo({ response }) {
 
   useEffect(() => {
     const fromStore = variant?.images;
-    setimage(fromStore?.length ? fromStore : defaultImages);
-  }, [variant, defaultImages]);
+    if (fromStore?.length) {
+      setimage(fromStore);
+    } else if (response?.variants?.[0]?.images) {
+      setimage(response.variants[0].images);
+    }
+  }, [variant, response]);
 
   return (
     <div className="flex w-full flex-col items-center gap-4">
@@ -54,7 +58,7 @@ export default function Photo({ response }) {
             delay: 6000,
             pauseOnMouseEnter: true,
           }}
-          loop={changeImage.length > 1}
+          loop={false}
           spaceBetween={0}
           className="h-full w-full [&_.swiper-button-prev]:h-9 [&_.swiper-button-prev]:w-9 [&_.swiper-button-prev]:rounded-full [&_.swiper-button-prev]:border [&_.swiper-button-prev]:border-custom-border/60 [&_.swiper-button-prev]:bg-light/80 [&_.swiper-button-prev]:text-text [&_.swiper-button-prev]:backdrop-blur-sm [&_.swiper-button-prev::after]:text-xs [&_.swiper-button-next]:h-9 [&_.swiper-button-next]:w-9 [&_.swiper-button-next]:rounded-full [&_.swiper-button-next]:border [&_.swiper-button-next]:border-custom-border/60 [&_.swiper-button-next]:bg-light/80 [&_.swiper-button-next]:text-text [&_.swiper-button-next]:backdrop-blur-sm [&_.swiper-button-next::after]:text-xs [&_.swiper-pagination-bullet-active]:bg-button [&_.swiper-pagination-bullet]:bg-custom-border"
         >
@@ -64,7 +68,7 @@ export default function Photo({ response }) {
                 <Image
                   src={image.url}
                   fill
-                  alt={`${response?.ans?.name || "Product"} image ${i + 1}`}
+                  alt={`${response?.name || "Product"} image ${i + 1}`}
                   className="object-contain"
                   sizes="(max-width: 768px) 100vw, 50vw"
                   priority={i === 0}
@@ -77,24 +81,24 @@ export default function Photo({ response }) {
 
       {/* ================= THUMBNAILS ================= */}
       {changeImage.length > 1 && (
-        <div className="flex h-[80px] sm:h-[90px] w-full justify-start sm:justify-center">
+        <div className="flex w-full justify-start sm:justify-center pt-2">
           <Swiper
             direction="horizontal"
             modules={[Navigation, Thumbs]}
             slidesPerView="auto"
-            spaceBetween={12}
+            spaceBetween={16}
             watchSlidesProgress
             onSwiper={setThumbsSwiper}
-            className="h-full w-full max-w-lg [&_.swiper-wrapper]:justify-start sm:[&_.swiper-wrapper]:justify-center [&_.swiper-slide-thumb-active>div]:ring-2 [&_.swiper-slide-thumb-active>div]:ring-button [&_.swiper-slide-thumb-active>div]:border-button"
+            className="w-full max-w-lg !py-2 !px-1 [&_.swiper-wrapper]:justify-start sm:[&_.swiper-wrapper]:justify-center [&_.swiper-slide-thumb-active>div]:border-button [&_.swiper-slide-thumb-active>div]:ring-2 [&_.swiper-slide-thumb-active>div]:ring-button/40 [&_.swiper-slide-thumb-active>div]:shadow-sm"
           >
             {changeImage.map((image, i) => (
-              <SwiperSlide key={i} className="!w-[72px] sm:!w-[84px]">
-                <div className="relative h-[72px] sm:h-[84px] w-full cursor-pointer overflow-hidden rounded-2xl border border-custom-border/50 bg-light p-1 transition-all hover:border-button hover:scale-105">
+              <SwiperSlide key={i} className="!w-[76px] sm:!w-[86px] !h-auto">
+                <div className="relative aspect-square w-full cursor-pointer overflow-hidden rounded-2xl border-2 border-custom-border/60 bg-light p-1.5 transition-all duration-200 hover:border-button/80 hover:scale-105">
                   <Image
                     src={image.url}
                     fill
-                    alt={`${response?.ans?.name || "Product"} thumbnail ${i + 1}`}
-                    className="object-contain"
+                    alt={`${response?.name || "Product"} thumbnail ${i + 1}`}
+                    className="object-contain p-1 rounded-xl"
                     sizes="90px"
                   />
                 </div>

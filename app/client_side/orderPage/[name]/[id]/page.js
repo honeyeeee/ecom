@@ -1,8 +1,14 @@
 
+// =========================================================================
+// 1. IMPORTS & DEPENDENCIES
+// =========================================================================
 import { cookies } from "next/headers";
 import Photo from "../../elements/photo";
 import Colors from "../../elements/color";
 import Buy from "../../elements/buyButton";
+import Prod from "@/app/backend/db/productSchema";
+import connectDb from "@/app/backend/db/db";
+
 import {
   Star,
   Check,
@@ -13,17 +19,26 @@ import {
 } from "lucide-react";
 
 export default async function ProductPage({ params }) {
+  // =======================================================================
+  // 2. DATA FETCHING & PARAMS EXTRACTION
+  // =======================================================================
   const { id } = await params;
   const cookieStore = await cookies();
 
-  const data = await fetch(`http://localhost:3000/backend/orderProduct/${id}`, {
-    method: "GET",
-    headers: {
-      Cookie: cookieStore.toString(),
-    },
-  });
-  const response = await data.json();
-  const product = response?.ans;
+  // Database Connection & Product Query with Population
+  await connectDb();
+  const response = await Prod.findById(id)
+    .populate("productType")
+    .populate("productCategory")
+    .populate("category")
+    .lean();
+
+  // Convert to serializable plain JSON object (removes Mongoose ObjectIds/circular refs)
+  const product = JSON.parse(JSON.stringify(response));
+
+  // =======================================================================
+  // 3. PRICING & DISCOUNT CALCULATIONS
+  // =======================================================================
   const sellingPrice = product?.basePrice?.sellingPrice;
   const mrp = product?.basePrice?.mrp;
 
@@ -34,18 +49,28 @@ export default async function ProductPage({ params }) {
 
   return (
     <main className="min-h-screen bg-body px-3 py-6 sm:px-6 sm:py-10 lg:px-10">
+
+      
       <div className="mx-auto w-full max-w-7xl">
-        {/* Main Product Card Container */}
+        {/* ================================================================= */}
+        {/* 4. MAIN PRODUCT CARD CONTAINER */}
+        {/* ================================================================= */}
         <section className="overflow-hidden rounded-[28px] border border-custom-border/40 bg-body p-4 sm:rounded-[36px] sm:p-8 lg:p-10 shadow-sm">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12 items-start">
-            {/* Left Column: Product Gallery */}
+
+            {/* ------------------------------------------------------------- */}
+            {/* SECTION A: LEFT COLUMN (PRODUCT IMAGE GALLERY / SWIPER)       */}
+            {/* ------------------------------------------------------------- */}
             <div className="w-full lg:col-span-6">
-              <Photo response={response} />
+              <Photo response={product} />
             </div>
 
-            {/* Right Column: Product Information */}
+            {/* ------------------------------------------------------------- */}
+            {/* SECTION B: RIGHT COLUMN (PRODUCT DETAILS & ACTIONS)           */}
+            {/* ------------------------------------------------------------- */}
             <div className="flex w-full flex-col lg:col-span-6 lg:pl-4">
-              {/* Badges */}
+
+              {/* [B.1] Badges & Tags (e.g., New Arrival, Trending, Category) */}
               <div className="mb-3 flex flex-wrap items-center gap-2.5">
                 {product?.homepageTags?.[0] ? (
                   <span className="rounded-full bg-button px-3.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-light sm:text-[11px]">
@@ -64,12 +89,12 @@ export default async function ProductPage({ params }) {
                 )}
               </div>
 
-              {/* Product Title */}
+              {/* [B.2] Product Title / Name */}
               <h1 className="font-cantata text-2xl font-normal tracking-wide text-text sm:text-3xl lg:text-4xl capitalize leading-snug">
                 {product?.name || "Product Title"}
               </h1>
 
-              {/* Rating Section */}
+              {/* [B.3] Rating & Reviews Section */}
               <div className="mt-3 flex flex-wrap items-center gap-2 text-sm text-head">
                 <div className="flex items-center gap-1 text-button">
                   {[...Array(5)].map((_, i) => (
@@ -81,10 +106,10 @@ export default async function ProductPage({ params }) {
                 </div>
                 <span className="font-medium">4.8 (120 reviews)</span>
                 <span className="text-custom-border">|</span>
-                <span className="text-head/70">Rating section</span>
+                <span className="text-head/70">Verified Customer Ratings</span>
               </div>
 
-              {/* Price Row */}
+              {/* [B.4] Price Section (Selling Price, MRP, Discount %) */}
               <div className="mt-4 flex flex-wrap items-center gap-3">
                 <span className="font-poppins text-3xl font-bold tracking-tight text-text sm:text-4xl">
                   {sellingPrice != null ? `₹${sellingPrice}` : "—"}
@@ -103,14 +128,14 @@ export default async function ProductPage({ params }) {
                 )}
               </div>
 
-              {/* Description */}
+              {/* [B.5] Product Description */}
               {product?.description && (
                 <p className="mt-3 text-sm leading-relaxed text-head/85 sm:text-base">
                   {product.description}
                 </p>
               )}
 
-              {/* Features List */}
+              {/* [B.6] Key Features / Highlights */}
               {product?.features?.length > 0 ? (
                 <div className="mt-4 flex flex-wrap items-center gap-4 text-xs font-medium text-head sm:text-sm">
                   {product.features.map((feature, i) => (
@@ -143,18 +168,21 @@ export default async function ProductPage({ params }) {
               {/* Divider */}
               <div className="my-5 w-full border-t border-custom-border/40"></div>
 
-              {/* Color and Size Selector */}
-              <Colors response={response} id={id} />
+              {/* [B.7] Color & Size Variants Selector */}
+              <Colors response={product} id={id} />
 
-              {/* Quantity & CTA Buttons */}
+              {/* [B.8] Quantity Selector & Action Buttons (Buy Now & Add to Cart) */}
               <Buy id={id} />
             </div>
           </div>
 
-          {/* Bottom Trust Badges Bar */}
+          {/* --------------------------------------------------------------- */}
+          {/* SECTION C: BOTTOM TRUST & ASSURANCE BADGES                      */}
+          {/* --------------------------------------------------------------- */}
           <div className="mt-10 rounded-2xl border border-custom-border/50 bg-light/60 p-4 sm:p-6">
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-custom-border/40">
-              {/* Feature 1 */}
+
+              {/* C.1 Free Delivery */}
               <div className="flex items-center gap-3.5 px-2">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-card/60 text-head">
                   <Truck className="h-5 w-5 text-head" />
@@ -165,7 +193,7 @@ export default async function ProductPage({ params }) {
                 </div>
               </div>
 
-              {/* Feature 2 */}
+              {/* C.2 Easy Returns */}
               <div className="flex items-center gap-3.5 px-2 lg:pl-6">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-card/60 text-head">
                   <RotateCcw className="h-5 w-5 text-head" />
@@ -176,7 +204,7 @@ export default async function ProductPage({ params }) {
                 </div>
               </div>
 
-              {/* Feature 3 */}
+              {/* C.3 Secure Payment */}
               <div className="flex items-center gap-3.5 px-2 lg:pl-6">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-card/60 text-head">
                   <ShieldCheck className="h-5 w-5 text-head" />
@@ -187,7 +215,7 @@ export default async function ProductPage({ params }) {
                 </div>
               </div>
 
-              {/* Feature 4 */}
+              {/* C.4 24/7 Customer Support */}
               <div className="flex items-center gap-3.5 px-2 lg:pl-6">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-card/60 text-head">
                   <Headphones className="h-5 w-5 text-head" />
@@ -197,6 +225,7 @@ export default async function ProductPage({ params }) {
                   <p className="text-xs text-head/70">We&apos;re here to help</p>
                 </div>
               </div>
+
             </div>
           </div>
         </section>

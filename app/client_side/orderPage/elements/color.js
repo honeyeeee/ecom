@@ -40,8 +40,8 @@ function colorHex(color) {
 export default function Colors({ response, id }) {
     const selectVarinat = lists((state) => state.setVert)
     const ProdInfo = lists((state) => state.setProduct)
-    const firstVariant = response?.ans?.variants?.[0]
-    const baseSelling = response?.ans?.basePrice?.sellingPrice ?? 0
+    const firstVariant = response?.variants?.[0]
+    const baseSelling = response?.basePrice?.sellingPrice ?? 0
 
     const [colorObj, setcolor] = useState(null)
     const [selectedColorName, setSelectedColorName] = useState(
@@ -51,7 +51,7 @@ export default function Colors({ response, id }) {
 
     const [productInfo, setProductInfo] = useState({
         productId: id,
-        name: response?.ans?.name,
+        name: response?.name,
         color: colorName(firstVariant?.color),
         size: "",
         Price: baseSelling,
@@ -90,7 +90,7 @@ export default function Colors({ response, id }) {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-3">
-                    {response?.ans?.variants?.map((a, i) => {
+                    {response?.variants?.map((a, i) => {
                         const name = colorName(a.color)
                         const hex = colorHex(a.color)
                         const isSelected = selectedColorName === name
@@ -101,11 +101,10 @@ export default function Colors({ response, id }) {
                                 key={i}
                                 title={name || `Color ${i + 1}`}
                                 aria-label={name || `Color ${i + 1}`}
-                                className={`relative flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full transition-all duration-200 cursor-pointer ${
-                                    isSelected
-                                        ? "ring-2 ring-button ring-offset-2 ring-offset-body scale-110 shadow-sm"
-                                        : "border border-custom-border/60 hover:scale-105 hover:border-button/60 opacity-90 hover:opacity-100"
-                                }`}
+                                className={`relative flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full transition-all duration-200 cursor-pointer ${isSelected
+                                    ? "ring-2 ring-button ring-offset-2 ring-offset-body scale-110 shadow-sm"
+                                    : "border border-custom-border/60 hover:scale-105 hover:border-button/60 opacity-90 hover:opacity-100"
+                                    }`}
                                 style={{ backgroundColor: hex }}
                                 onClick={() => {
                                     setcolor(a)
@@ -155,11 +154,10 @@ export default function Colors({ response, id }) {
                                 type="button"
                                 key={index}
                                 disabled={isOutOfStock}
-                                className={`flex h-10 min-w-[54px] sm:min-w-[58px] items-center justify-center rounded-full border px-4 py-2 text-xs sm:text-sm font-medium transition-all duration-150 cursor-pointer ${
-                                    isSelected
-                                        ? "bg-button text-light border-button shadow-sm scale-105"
-                                        : "bg-light border-custom-border text-text hover:bg-card hover:border-button disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-light disabled:hover:border-custom-border"
-                                }`}
+                                className={`flex h-10 min-w-[54px] sm:min-w-[58px] items-center justify-center rounded-full border px-4 py-2 text-xs sm:text-sm font-medium transition-all duration-150 cursor-pointer ${isSelected
+                                    ? "bg-button text-light border-button shadow-sm scale-105"
+                                    : "bg-light border-custom-border text-text hover:bg-card hover:border-button disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-light disabled:hover:border-custom-border"
+                                    }`}
                                 onClick={() => {
                                     setSelectedSize(label)
                                     setProductInfo((prev) => ({

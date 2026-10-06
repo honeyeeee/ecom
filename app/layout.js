@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono  ,Poppins ,Cantata_One   } from "next/font/google";
+import { Geist, Geist_Mono, Poppins, Cantata_One } from "next/font/google";
 import "./globals.css";
 
 
@@ -10,9 +10,9 @@ const cantataOne = Cantata_One({
 })
 
 const poppins = Poppins({
-  subsets:["latin"],
-   weight: ["700", "800"],
-   variable:"--font-popins"
+  subsets: ["latin"],
+  weight: ["700", "800"],
+  variable: "--font-popins"
 })
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,8 +23,6 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
-
 
 
 

@@ -1,7 +1,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import AddToCart from "./buttons";
 import connectDb from "@/app/backend/db/db";
 import Prod from "@/app/backend/db/productSchema";
 import SubCategory from "@/app/backend/db/subCategory";
@@ -117,15 +116,12 @@ export default async function ClientProduct({ searchParams }) {
                 </div>
               </Link>
 
-              {/* Action Buttons */}
-              <div className="grid grid-cols-2 gap-2 p-4 pt-0 sm:p-5 sm:pt-0">
-                <AddToCart product={a} />
-
+              <div className="p-4 pt-0 sm:p-5 sm:pt-0">
                 <Link
                   href={productUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center rounded-full bg-head py-2 sm:py-2.5 text-[10px] sm:text-sm font-medium text-body hover:opacity-90 transition text-center"
+                  className="flex w-full items-center justify-center rounded-full bg-head py-2 sm:py-2.5 text-[10px] sm:text-sm font-medium text-body hover:opacity-90 transition text-center"
                 >
                   Buy Now
                 </Link>

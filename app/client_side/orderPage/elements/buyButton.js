@@ -1,10 +1,47 @@
 'use client'
 import lists from "@/app/store/userUiState"
+import useCartStore from "@/app/store/cartStore"
 import { useState } from "react"
 import { Minus, Plus, ShoppingCart } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { addToCart } from "../../userProductList/addToCartFetch"
+
+const getId = (value) =>
+     typeof value === "object" ? value?._id : value
+
+const getVariant = (value) =>
+     typeof value === "object" ? value?.name ?? "" : value ?? ""
+
 export default function Buy({ id }) {
+     const addProduct = useCartStore((state) => state.addProduct)
+     const openCart = useCartStore((state) => state.openCart);
      const product = lists((state) => state.products)
+
+     function preventDuplicate(product) {
+          if (!product?.size) {
+               alert("Please select size");
+               return false;
+          }
+
+          const isDuplicate = useCartStore.getState().cartItems.some((item) =>
+               String(getId(item.productId)) === String(getId(product.productId)) &&
+               getVariant(item.size ?? item.Size) === getVariant(product.size) &&
+               getVariant(item.color ?? item.Color) === getVariant(product.color)
+          );
+
+          if (isDuplicate) {
+               openCart();
+
+               return false;
+          }
+
+          addProduct(product);
+          addToCart(product);
+          return true;
+     }
+
+
+
      const [displayQty, setDisplayQty] = useState(1)
      const router = useRouter()
      const datafind = async () => {
@@ -85,7 +122,12 @@ export default function Buy({ id }) {
                <button
                     type="button"
                     className="flex h-12 items-center justify-center gap-2 rounded-full border border-custom-border bg-light/60 px-6 text-sm font-semibold tracking-wide text-text transition-all duration-200 hover:border-button hover:bg-card active:scale-[0.98] sm:min-w-[150px] cursor-pointer"
-               >
+                    onClick={() => {
+
+                         preventDuplicate(product)
+
+
+                    }}  >
                     <ShoppingCart className="h-4 w-4 text-head" />
                     <span>Add To Cart</span>
                </button>

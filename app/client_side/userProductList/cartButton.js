@@ -2,21 +2,21 @@
 
 /**
  * Navbar cart icon + item count badge
- * Count `productList.productsNumber` se aata hai (CartSync / cartProduct se update)
+ * Count CartSync aur addProduct actions se update hota hai.
  */
 
 import { ShoppingBag } from "lucide-react";
-import productlist from "@/app/store/cartSection/productList";
+import useCartStore from "@/app/store/cartStore";
 
 export default function CartButton() {
-  const openCart = productlist((state) => state.openCart);
-  const productsNumber = productlist((state) => state.productsNumber);
+  const openCart = useCartStore((state) => state.openCart);
+  const productsNumber = useCartStore((state) => state.productsNumber);
 
   return (
     <button
       type="button"
       aria-label="Open cart"
-      onClick={() => openCart()} // `cartDrawer.js` — cartOpen true
+      onClick={openCart}
       className="relative hover:opacity-60 transition"
     >
       <ShoppingBag size={21} strokeWidth={1.7} />

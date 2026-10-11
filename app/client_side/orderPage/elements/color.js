@@ -1,82 +1,77 @@
 'use client'
 
+/**
+ * Order page: color + size picker.
+ * Props: `response` = product API data, `id` = productId.
+ * Zustand (`userUiState`) ko selected variant + cart/checkout ke liye productInfo sync karta hai.
+ */
+
 import { useEffect, useState } from "react"
 import lists from "@/app/store/userUiState"
 import { Ruler } from "lucide-react"
 
+// Backend color object { name, hexCode } ya purana string format — UI ke liye sirf naam nikalna
 function colorName(color) {
     if (!color) return ""
     if (typeof color === "string") return color
     return color.name ?? ""
 }
 
-function colorHex(color) {
-    if (!color) return "#816447"
-    if (typeof color === "object" && color.hexCode) return color.hexCode
-    if (typeof color === "object" && color.hex) return color.hex
-    if (typeof color === "string") {
-        if (color.startsWith("#") || color.startsWith("rgb")) return color
-        const colorMap = {
-            black: "#1F1F1F",
-            white: "#F5EBDD",
-            red: "#B2533E",
-            green: "#4F6F52",
-            blue: "#3D5A80",
-            navy: "#1D2D44",
-            beige: "#D8C7B5",
-            brown: "#76583D",
-            grey: "#8D99AE",
-            gray: "#8D99AE",
-            pink: "#DEB6AB",
-            olive: "#606C38",
-            cream: "#F5EBDD",
-            tan: "#C9B39A"
-        }
-        return colorMap[color.toLowerCase()] || "#816447"
-    }
-    return "#816447"
-}
-
 export default function Colors({ response, id }) {
+    // --- Zustand actions: global selected variant + product snapshot (buy button, etc.) ---
     const selectVarinat = lists((state) => state.setVert)
     const ProdInfo = lists((state) => state.setProduct)
+
+    // --- API se derived (re-render par fresh) ---
     const firstVariant = response?.variants?.[0]
     const baseSelling = response?.basePrice?.sellingPrice ?? 0
+    console.log('ye hai baseselling',baseSelling)
+    const image = response?.variants?.[0]?.images?.[0]?.url
+    console.log('ye hai image',image)
+    console.log('ye hai response', response)
 
+    // --- Local UI state ---
+    // colorObj: user ne jo variant (color) choose kiya; null = abhi first variant default
     const [colorObj, setcolor] = useState(null)
     const [selectedColorName, setSelectedColorName] = useState(
         () => colorName(firstVariant?.color)
     )
     const [selectedSize, setSelectedSize] = useState("")
 
+    // Cart/checkout ke liye ek object — har color/size change par update
     const [productInfo, setProductInfo] = useState({
         productId: id,
         name: response?.name,
+        image: image,
         color: colorName(firstVariant?.color),
         size: "",
         Price: baseSelling,
         quantity: 1,
     })
 
+    // productInfo change → store me push (Add to cart / buy flow isse padhta hai)
     useEffect(() => {
         ProdInfo(productInfo)
     }, [productInfo])
 
+    // Mount par: agar user ne color nahi chuna, pehla variant global store me set
     useEffect(() => {
         if (!colorObj && firstVariant) {
             selectVarinat(firstVariant)
         }
     }, [colorObj])
 
+    // Active variant = selected color ya default first; iski sizes list size buttons ke liye
     const activeVariant = colorObj ?? firstVariant
     const sizes = activeVariant?.sizes ?? []
 
+    // Size row par extra charge: base selling + additionalPrice
     const priceForSize = (sizeRow) =>
         baseSelling + (sizeRow?.additionalPrice ?? 0)
 
     return (
         <div className="flex w-full flex-col gap-6">
-            {/* Color Section */}
+            {/* COLOR UI: har variant = ek swatch; hexCode backend se background */}
             <div className="flex flex-col gap-3">
                 <div className="flex items-center justify-between">
                     <p className="text-xs font-semibold uppercase tracking-[0.18em] text-head">
@@ -92,7 +87,7 @@ export default function Colors({ response, id }) {
                 <div className="flex flex-wrap items-center gap-3">
                     {response?.variants?.map((a, i) => {
                         const name = colorName(a.color)
-                        const hex = colorHex(a.color)
+                        const hex = a.color?.hexCode
                         const isSelected = selectedColorName === name
 
                         return (
@@ -107,6 +102,7 @@ export default function Colors({ response, id }) {
                                     }`}
                                 style={{ backgroundColor: hex }}
                                 onClick={() => {
+                                    // Naya color: variant store + local state; size reset, price base par wapas
                                     setcolor(a)
                                     selectVarinat(a)
                                     setSelectedColorName(name)
@@ -114,6 +110,7 @@ export default function Colors({ response, id }) {
                                     setProductInfo((prev) => ({
                                         ...prev,
                                         color: name,
+                                        image: a.images?.[0]?.url ?? image,
                                         size: "",
                                         Price: baseSelling,
                                     }))
@@ -128,7 +125,7 @@ export default function Colors({ response, id }) {
                 </div>
             </div>
 
-            {/* Size Section */}
+            {/* SIZE UI: active variant ki sizes; stock 0 = disabled */}
             <div className="flex flex-col gap-3">
                 <div className="flex items-center justify-between">
                     <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-head">
@@ -159,6 +156,7 @@ export default function Colors({ response, id }) {
                                     : "bg-light border-custom-border text-text hover:bg-card hover:border-button disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-light disabled:hover:border-custom-border"
                                     }`}
                                 onClick={() => {
+                                    // Size select → productInfo me size + size-specific price
                                     setSelectedSize(label)
                                     setProductInfo((prev) => ({
                                         ...prev,

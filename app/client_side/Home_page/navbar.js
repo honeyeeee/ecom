@@ -12,6 +12,9 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+
+
+
   return (
     <header className="sticky top-0 z-40 border-b border-custom-border/40 bg-body px-4 py-3 sm:px-6 sm:py-4 md:px-8 md:py-5">
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-3 sm:gap-4">
@@ -65,13 +68,16 @@ export default function Navbar() {
             </ul>
           </details>
 
-          <button
-            type="button"
-            aria-label="Search"
-            className="hover:opacity-60 transition"
-          >
-            <Search size={20} strokeWidth={1.7} className="sm:h-[21px] sm:w-[21px]" />
-          </button>
+          <label className="flex items-center gap-2 rounded-full border border-custom-border/60 bg-light px-3 py-1.5">
+            <Search size={16} strokeWidth={1.7} className="shrink-0 opacity-60" />
+            <input
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+              className="w-24 bg-transparent text-sm outline-none placeholder:text-current/50 sm:w-36 md:w-44"
+              
+            />
+          </label>
 
           <Link
             href="/account"

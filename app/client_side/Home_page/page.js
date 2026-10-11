@@ -1,8 +1,14 @@
 import { ArrowRightCircle, Truck, Shield, CircleHelpIcon, MessageCircle, Gem, Leaf } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import connectDb from "@/app/backend/db/db";
+import Prod from "@/app/backend/db/productSchema";
+import searchStore from "@/app/store/search";
 
-export default function Home() {
+
+export default async  function Home() {
+// data fetching for search database not by api
+
   return (
     <>
       <main className="w-full min-h-screen">

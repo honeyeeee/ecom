@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "fuse.js": "^7.5.0",
     "imagekit": "^6.0.0",
     "jose": "^6.2.10",
     "jsonwebtoken": "^9.0.3",

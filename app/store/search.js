@@ -1,11 +1,11 @@
 import { create } from "zustand";
 
 const useSearchStore = create((set)=>({
-    search: [],
+    searchProducts: [],
 
 
     setsearch : (products)=>{
-        set({search: products})
+        set({searchProducts: products})
     }
 }))
 

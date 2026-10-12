@@ -1,21 +1,57 @@
 'use client'
 import lists from "@/app/store/userUiState"
 import useCartStore from "@/app/store/cartStore"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Minus, Plus, ShoppingCart } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { addToCart } from "../../userProductList/addToCartFetch"
+import cartSync from "@/app/client_side/Home_page/cartSync"
 
-const getId = (value) =>
-     typeof value === "object" ? value?._id : value
 
-const getVariant = (value) =>
-     typeof value === "object" ? value?.name ?? "" : value ?? ""
-
+// fetch req for db cart items 
 export default function Buy({ id }) {
+
+     // useEffect(() => {
+     //      async function fetchCartData() {
+     //           try {
+     //                const data = await fetch('/backend/cart/get', {
+     //                     method: 'GET',
+     //                     credentials: 'include',
+     //                     headers: {
+     //                          'Content-Type': 'application/json',
+     //                     },
+     //                })
+     //                const response = await data.json()
+     //                if (!response.success) {
+     //                     throw new Error(response.message)
+     //                }
+     //                console.log('cart data from backend', response)
+
+     //           } catch (error) {
+     //                console.log(error)
+     //           }
+
+
+     //      }
+     //      fetchCartData()
+     // }, [])
+
+
+
+
      const addProduct = useCartStore((state) => state.addProduct)
      const openCart = useCartStore((state) => state.openCart);
      const product = lists((state) => state.products)
+     const cartItems = useCartStore((state) => state.cartItems)
+
+
+     const duplicate = new Set()
+     for (let items of cartItems) {
+          let itemKey = `${items.productId}${items.size}${items.color}`
+          duplicate.add(itemKey)
+
+     }
+
 
      function preventDuplicate(product) {
           if (!product?.size) {
@@ -23,27 +59,21 @@ export default function Buy({ id }) {
                return false;
           }
 
-          const isDuplicate = useCartStore.getState().cartItems.some((item) =>
-               String(getId(item.productId)) === String(getId(product.productId)) &&
-               getVariant(item.size ?? item.Size) === getVariant(product.size) &&
-               getVariant(item.color ?? item.Color) === getVariant(product.color)
-          );
-
-          if (isDuplicate) {
+          if (duplicate.has(`${product.productId}${product.size}${product.color}`)) {
                openCart();
-
                return false;
           }
-
+          duplicate.add(`${product.productId}${product.size}${product.color}`)
           addProduct(product);
           addToCart(product);
           return true;
+
+
      }
-
-
 
      const [displayQty, setDisplayQty] = useState(1)
      const router = useRouter()
+
      const datafind = async () => {
           try {
                const data = await fetch(`/backend/UserInfo/${id}`, {

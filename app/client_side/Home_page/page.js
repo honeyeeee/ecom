@@ -4,13 +4,17 @@ import Link from "next/link";
 import connectDb from "@/app/backend/db/db";
 import Prod from "@/app/backend/db/productSchema";
 import searchStore from "@/app/store/search";
-
+import CartSync from "./cartSync";
 
 export default async  function Home() {
 // data fetching for search database not by api
 
   return (
     <>
+    {/* cart sync to update the cart count in the navbar
+    every time the page is loaded, the cart count is updated
+    */}
+    <CartSync />
       <main className="w-full min-h-screen">
         {/* 
           ========================================================================

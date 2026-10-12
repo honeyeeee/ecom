@@ -71,11 +71,7 @@ export default async function ClientProduct({ searchParams }) {
               key={a._id || i}
               className="group flex flex-col bg-white rounded-[28px] sm:rounded-[32px] border border-head/20 overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
             >
-              <Link
-                href={productUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <Link href={productUrl}>
                 {/* Product Image */}
                 <div className="relative w-full aspect-[4/4.2] bg-light overflow-hidden">
                   {a.variants?.[0]?.images?.[0]?.url && (
@@ -119,8 +115,6 @@ export default async function ClientProduct({ searchParams }) {
               <div className="p-4 pt-0 sm:p-5 sm:pt-0">
                 <Link
                   href={productUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="flex w-full items-center justify-center rounded-full bg-head py-2 sm:py-2.5 text-[10px] sm:text-sm font-medium text-body hover:opacity-90 transition text-center"
                 >
                   Buy Now

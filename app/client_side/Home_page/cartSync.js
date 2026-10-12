@@ -11,3 +11,26 @@
  * check karo `cartProducts` prop yahan aa raha hai ya nahi (login + token cookie).
  */
 
+import { useEffect, useState } from "react";  
+import fetchCartData from "../fetch/cartFetch";
+
+
+import useCartStore from "@/app/store/cartStore";
+
+export default function CartSync() {
+  const setCartItems = useCartStore(
+    (state) => state.setCartItems
+  );
+
+  useEffect(() => {
+    async function syncCart() {
+      const cartData = await fetchCartData();
+      setCartItems(cartData);
+    }
+
+    syncCart();
+  }, []);
+
+  return null;
+}
+

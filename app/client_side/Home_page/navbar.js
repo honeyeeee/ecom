@@ -1,7 +1,8 @@
-import { Menu, Search, UserCircle2, X } from "lucide-react";
+import { Menu, UserCircle2, X } from "lucide-react";
 import Link from "next/link";
 // Cart icon — store se count; click par `CartDrawer` open
 import CartButton from "../userProductList/cartButton";
+import FetchSearch from "./productFetch/searchBar";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -25,7 +26,7 @@ export default function Navbar() {
           Virelle
         </Link>
 
-        <ul className="hidden items-center gap-5 text-sm md:flex lg:gap-10">
+        <ul className="hidden items-center gap-4 whitespace-nowrap text-sm md:flex lg:gap-8">
           {navLinks.map(({ href, label }) => (
             <li key={href}>
               <Link href={href} className="hover:opacity-60 transition">
@@ -68,16 +69,7 @@ export default function Navbar() {
             </ul>
           </details>
 
-          <label className="flex items-center gap-2 rounded-full border border-custom-border/60 bg-light px-3 py-1.5">
-            <Search size={16} strokeWidth={1.7} className="shrink-0 opacity-60" />
-            <input
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-              className="w-24 bg-transparent text-sm outline-none placeholder:text-current/50 sm:w-36 md:w-44"
-              
-            />
-          </label>
+          <FetchSearch />
 
           <Link
             href="/account"

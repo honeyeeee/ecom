@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { getAuthenticatedUser } from "../auth";
 import Cart from "../../db/cart";
 
+
 export async function GET() {
   try {
     await connectDb();

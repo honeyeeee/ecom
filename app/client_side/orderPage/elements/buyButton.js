@@ -11,37 +11,10 @@ import cartSync from "@/app/client_side/Home_page/cartSync"
 // fetch req for db cart items 
 export default function Buy({ id }) {
 
-     // useEffect(() => {
-     //      async function fetchCartData() {
-     //           try {
-     //                const data = await fetch('/backend/cart/get', {
-     //                     method: 'GET',
-     //                     credentials: 'include',
-     //                     headers: {
-     //                          'Content-Type': 'application/json',
-     //                     },
-     //                })
-     //                const response = await data.json()
-     //                if (!response.success) {
-     //                     throw new Error(response.message)
-     //                }
-     //                console.log('cart data from backend', response)
-
-     //           } catch (error) {
-     //                console.log(error)
-     //           }
-
-
-     //      }
-     //      fetchCartData()
-     // }, [])
-
-
-
-
      const addProduct = useCartStore((state) => state.addProduct)
      const openCart = useCartStore((state) => state.openCart);
      const product = lists((state) => state.products)
+     const setProductInfo = lists((state) => state.setProductInfo)
      const cartItems = useCartStore((state) => state.cartItems)
 
 
@@ -63,12 +36,14 @@ export default function Buy({ id }) {
                openCart();
                return false;
           }
+
           duplicate.add(`${product.productId}${product.size}${product.color}`)
           addProduct(product);
           addToCart(product);
+          console.log(duplicate)
           return true;
 
-
+       
      }
 
      const [displayQty, setDisplayQty] = useState(1)
@@ -132,11 +107,14 @@ export default function Buy({ id }) {
                               alert("Please select size")
                               return
                          }
-                         console.log(product)
+                         console.log( product)
                          const result = await datafind()
                          console.log(result.success)
+                         
                          if (result?.success === true) {
                               console.log('link laga agee ja ')
+                              console.log('ye hai product info',product)
+                              setProductInfo(product)
                               router.push('/client_side/orderPage/address')
                          }
                          else {

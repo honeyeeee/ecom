@@ -10,6 +10,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { X, Minus, Plus, Trash2 } from "lucide-react";
 import useCartStore from "@/app/store/cartStore";
+import CartSync from "@/app/client_side/Home_page/cartSync"
 
 export default function CartDrawer() {
   // Zustand store se drawer state aur cart ki values lena.
@@ -25,6 +26,7 @@ export default function CartDrawer() {
       className={`fixed top-0 right-0 h-screen w-[500px] max-w-full bg-body border-l border-border z-50 shadow-2xl flex flex-col transition-transform duration-300 ${cartOpen ? "translate-x-0" : "translate-x-full"
         }`}
     >
+      {cartItems.length===0 ? <CartSync /> : []}
       {/* Header: cart title, item count, aur drawer close button. */}
       <div className="relative shrink-0 w-full px-6 py-6 border-b border-border bg-body">
         <div className="flex flex-col items-center">
@@ -177,7 +179,8 @@ export default function CartDrawer() {
                     type="button"
                     className="absolute right-3 top-3 w-8 h-8 flex items-center justify-center rounded-full text-muted"
                   >
-                    <Trash2 size={16}                                         onClick={() => deleteProduct(a)} />
+                    <Trash2 size={16} 
+                     onClick={() => deleteProduct(a)} />
                   </button>
                 </div>
               );

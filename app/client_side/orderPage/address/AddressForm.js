@@ -1,7 +1,7 @@
 "use client";
 
+import lists from "@/app/store/userUiState";
 import { useState } from "react";
-
 const fields = [
   { name: "Full name", type: "text", span: "sm:col-span-1", autoComplete: "name" },
   { name: "Phone number", type: "tel", span: "sm:col-span-1", autoComplete: "tel" },
@@ -14,13 +14,42 @@ const fields = [
   { name: "Country / Region", type: "text", span: "sm:col-span-1", autoComplete: "country-name" },
 ];
 
+async function saveUserAddress(payload) {
+  const res = await fetch("/backend/UserAddress", {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json().catch(() => ({}));
+  return { ok: res.ok, status: res.status, data };
+}
+
 export default function AddressForm() {
+  const productInfo = lists((state) => state.productInfo)
+  console.log('ye hai product info',productInfo)
   const [submittedAddress, setSubmittedAddress] = useState(null);
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    setSubmittedAddress(Object.fromEntries(formData.entries()));
+    const raw = Object.fromEntries(formData.entries());
+    setSubmittedAddress(raw);
+
+    const apartment = raw["Apartment, suite, etc. (optional)"]?.trim();
+    const street = raw["Street address"]?.trim() ?? "";
+    await saveUserAddress({
+      name: raw["Full name"],
+      phone: raw["Phone number"],
+      email: raw["Email address"],
+      address: apartment ? `${street}, ${apartment}` : street,
+      city: raw["City"],
+      state: raw["State / Province"],
+      postalCode: raw["Postal code"],
+      country: raw["Country / Region"],
+    });
   }
 
   return (

@@ -4,7 +4,8 @@ const lists = create((set)=>({
     fest:[],
     variants : null,
     products : null,
-
+    productInfo : null,
+    
     itmes:async ()=>{
         // const data = await fetch('/backend/servers/occasion/lists')
         const data = await fetch('/backend/formUpload/occasion/lists')
@@ -24,6 +25,11 @@ const lists = create((set)=>({
     setProduct:(product)=>{
         set({
             products:product
+        })
+    },
+    setProductInfo:(productInfo)=>{
+        set({
+            productInfo:productInfo
         })
     }
 

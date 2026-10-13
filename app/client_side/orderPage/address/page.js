@@ -1,6 +1,7 @@
 import AddressForm from "./AddressForm";
-
+import lists from "@/app/store/userUiState";
 export default function AddressPage() {
+
   return (
     <main className="min-h-screen bg-body px-4 py-8 text-text sm:px-6 sm:py-12 lg:px-8">
       <div className="mx-auto max-w-6xl">

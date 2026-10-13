@@ -29,10 +29,10 @@ export async function POST(request) {
             user: userId,
         });
 
-        return NextResponse.json({ message: "Address created successfully" }, { status: 201 });
+        return NextResponse.json({ message: "Address created successfully" }, { status: 201 },{success:true});
 
     } catch (error) {
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 },{success:false});
     }
 
 }

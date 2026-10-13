@@ -4,7 +4,7 @@ const lists = create((set)=>({
     fest:[],
     variants : null,
     products : null,
-    productInfo : null,
+    productInfo : [],
     
     itmes:async ()=>{
         // const data = await fetch('/backend/servers/occasion/lists')

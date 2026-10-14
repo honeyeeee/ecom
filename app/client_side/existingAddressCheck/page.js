@@ -25,7 +25,7 @@ export default function ExistingAddressCheck() {
     const savedAddresses = lists((state) => state.savedAddresses)
     const productInfo = lists((state) => state.productInfo)
     const setProductInfo = lists((state) => state.setProductInfo)
-    console.log('productInfo from existingAddressCheck', productInfo)
+    // console.log('productInfo from existingAddressCheck', productInfo)
     console.log('savedAddresses', savedAddresses)
     function checkAddress() {
         if(savedAddresses.length >0) {
@@ -185,9 +185,9 @@ export default function ExistingAddressCheck() {
                         Add New Address
                     </button>
                     <button type="button" className={proceedBtnClass} onClick={ async ()=>{
-                        
                         const response = await validateUserProduct()
                         setProductInfo(response?.product)
+                       
                         if(response?.success===true) {
                             checkAddress()
                             console.log('user and product is valid')

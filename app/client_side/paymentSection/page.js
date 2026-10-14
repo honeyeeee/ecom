@@ -15,7 +15,7 @@ export default function PaymentSection() {
     // -------------------------------------------------------------------------
     // DATA: Zustand — cart / product info (source: userUiState.productInfo)
     // -------------------------------------------------------------------------
-    const addressInfo = userUiState((state) => state.addressInfo)
+    const addressInfo = userUiState((state) => state.savedAddresses)
     const productInfo = userUiState((state) => state.productInfo)
     console.log("addressInfo", addressInfo)
     console.log("productInfo", productInfo)
@@ -39,6 +39,21 @@ export default function PaymentSection() {
         return acc + price * qty
     }, 0)
 
+
+
+    const handlePurchase = async () => {
+        const response = await fetch("/backend/ordersBackendApi", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                product: items,
+                address: addressInfo,
+                paymentMethod: "COD",
+            }),
+        })
+    }
     // -------------------------------------------------------------------------
     // CONFIG: Trust badges row ("Shop with confidence")
     // -------------------------------------------------------------------------
@@ -146,33 +161,7 @@ export default function PaymentSection() {
                ================================================================= */}
             <div className="order-2 flex flex-col overflow-hidden rounded-xl border border-payment-border bg-white shadow-payment-card lg:order-none lg:col-start-4 lg:col-end-6 lg:row-start-1 lg:row-end-3">
                 <h1 className="p-3 text-lg font-medium text-payment-text font-cantata sm:p-4 sm:text-xl">Address</h1>
-                <div className="w-full h-px bg-payment-border" aria-hidden />
-
-                <div className="flex flex-1 flex-col gap-3 p-3 sm:p-4">
-                    <div className="flex flex-row items-start gap-3 rounded-xl border border-payment-border bg-payment-page-bg/30 p-3 sm:p-4">
-                        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white border border-payment-border">
-                            <MapPin className="h-5 w-5 text-payment-accent" />
-                        </span>
-                        <div className="flex flex-col gap-2 min-w-0 flex-1">
-                            <p className="text-xs font-semibold uppercase tracking-wide text-payment-text">Delivery address</p>
-                            <p className="text-sm text-payment-muted leading-relaxed">
-                                Your saved address will appear here after you complete the address step.
-                            </p>
-                            {/* Address placeholders — replace with real fields from store/API */}
-                            <div className="mt-1 flex flex-col gap-1.5 text-sm text-payment-muted/80">
-                                <span className="h-9 rounded-lg border border-dashed border-payment-border bg-white px-3 flex items-center">
-                                    Full name
-                                </span>
-                                <span className="h-9 rounded-lg border border-dashed border-payment-border bg-white px-3 flex items-center">
-                                    Street, city, state — PIN
-                                </span>
-                                <span className="h-9 rounded-lg border border-dashed border-payment-border bg-white px-3 flex items-center">
-                                    Phone number
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
 
             {/* =================================================================
@@ -203,6 +192,7 @@ export default function PaymentSection() {
                     <button
                         type="button"
                         className="mt-2 w-full rounded-xl bg-button py-3.5 text-sm font-semibold tracking-wide text-light shadow-sm transition hover:bg-button-hover active:scale-[0.98] sm:mt-auto"
+                        onClick={handlePurchase}
                     >
                         Purchase
                     </button>

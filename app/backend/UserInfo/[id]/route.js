@@ -141,6 +141,8 @@ export async function POST(request, { params }) {
                     color: variant.color,
                     size: sizeStock.size,
                     stock: sizeStock.stock,
+                    image: variant.images[0].url,
+                    price: product.basePrice.sellingPrice,
                     quantity: qty
                 }
             },

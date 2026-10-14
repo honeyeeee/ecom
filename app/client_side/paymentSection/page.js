@@ -86,7 +86,7 @@ export default function PaymentSection() {
                                     {item.image ? (
                                         <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-payment-border bg-white sm:h-20 sm:w-20">
                                             <Image
-                                                src={item.image}
+                                                src={item.image}        
                                                 alt={item.name ?? "Product"}
                                                 width={80}
                                                 height={80}
@@ -99,7 +99,7 @@ export default function PaymentSection() {
                                     <div className="flex flex-1 flex-col gap-1 min-w-0">
                                         <h2 className="text-sm font-semibold text-payment-text truncate">{item.name}</h2>
                                         <div className="flex flex-wrap gap-2 text-xs text-payment-muted">
-                                            {item.color && <span>Color: {item.color}</span>}
+                                            {item.color.name && <span>Color: {item.color.name}</span>}
                                             {item.size && <span>Size: {item.size}</span>}
                                             <span>Qty: {qty}</span>
                                         </div>

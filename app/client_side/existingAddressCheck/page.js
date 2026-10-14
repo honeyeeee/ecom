@@ -5,6 +5,7 @@
 // =============================================================================
 import lists from "@/app/store/userUiState"
 import { Globe, Mail, MapPin, Phone } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 // =============================================================================
 // Shared button styles (header/footer actions)
@@ -19,9 +20,45 @@ const proceedBtnClass =
 // ExistingAddressCheck — checkout step: pick a saved delivery address
 // =============================================================================
 export default function ExistingAddressCheck() {
+    const router = useRouter()
     // Zustand store: list of user's saved addresses (populated elsewhere, e.g. API)
     const savedAddresses = lists((state) => state.savedAddresses)
+    const productInfo = lists((state) => state.productInfo)
+    const setProductInfo = lists((state) => state.setProductInfo)
+    console.log('productInfo from existingAddressCheck', productInfo)
     console.log('savedAddresses', savedAddresses)
+    function checkAddress() {
+        if(savedAddresses.length >0) {
+            router.push('/client_side/paymentSection')
+            // console.log('saved addresses found')
+        } else {
+            router.push('/client_side/Home_page/address')
+            // console.log('no saved addresses')
+        }
+    }
+
+    // checking user and product is valid or not
+
+    const id = productInfo.productId
+    console.log('id from validateUserProduct', id)
+
+
+        async function validateUserProduct(){
+            const data = await fetch(`/backend/UserInfo/${id}`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    product: productInfo
+                }),
+            })
+            const response = await data.json()
+
+            console.log('response from validateUserProduct', response)
+            return response
+        }
 
     return (
         // Page shell: full-width layout, theme background
@@ -147,7 +184,18 @@ export default function ExistingAddressCheck() {
                     <button type="button" className={`${addNewBtnClass} w-full sm:w-auto`}>
                         Add New Address
                     </button>
-                    <button type="button" className={proceedBtnClass}>
+                    <button type="button" className={proceedBtnClass} onClick={ async ()=>{
+                        
+                        const response = await validateUserProduct()
+                        setProductInfo(response?.product)
+                        if(response?.success===true) {
+                            checkAddress()
+                            console.log('user and product is valid')
+                        } else {
+                            router.push('/client_side/Home_page/address')
+                            console.log('user and product is not valid')
+                        }
+                    }}>
                         Proceed to Payment
                     </button>
                 </footer>

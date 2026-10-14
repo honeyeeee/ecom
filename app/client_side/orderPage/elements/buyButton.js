@@ -138,7 +138,6 @@ export default function Buy({ id }) {
                          if (result?.success === false) {
                               console.log('link laga agee ja ')
                               console.log('ye hai product info',product)
-                              setProductInfo(product)
                               router.push('/client_side/orderPage/address')
                          }
                          else if(result?.continue === false){
@@ -148,6 +147,7 @@ export default function Buy({ id }) {
                          }
                          // if data available and continue is true
                          else if (result?.success === true ){
+                              setProductInfo(product)
                               setSavedAddresses(result?.data)
                               router.push('/client_side/existingAddressCheck')
                          }

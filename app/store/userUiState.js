@@ -6,7 +6,13 @@ const lists = create((set)=>({
     products : null,
     productInfo : [],
     addressInfo : null,
+    savedAddresses : [],
     
+    setSavedAddresses:(savedAddresses)=>{
+        set({
+            savedAddresses:savedAddresses
+        })
+    },
     itmes:async ()=>{
         // const data = await fetch('/backend/servers/occasion/lists')
         const data = await fetch('/backend/formUpload/occasion/lists')

@@ -16,7 +16,7 @@ export default function Buy({ id }) {
      const product = lists((state) => state.products)
      const setProductInfo = lists((state) => state.setProductInfo)
      const cartItems = useCartStore((state) => state.cartItems)
-
+     const setSavedAddresses = lists((state) => state.setSavedAddresses)
 
      const duplicate = new Set()
      for (let items of cartItems) {
@@ -50,23 +50,47 @@ export default function Buy({ id }) {
      const router = useRouter()
 
      const datafind = async () => {
+          // try {
+          //      const data = await fetch(`/backend/UserInfo/${id}`, {
+          //           method: 'POST',
+          //           credentials: 'include',
+          //           headers: {
+          //                'Content-Type': 'application/json',
+          //           },
+          //           body: JSON.stringify({
+          //                product
+          //           })
+          //      })
+
+          //      const response = await data.json();
+          //      console.log('ye hai deta form check', response)
+          //      return response
+          // } catch (error) {
+          //      console.log(error)
+          // }
+
           try {
-               const data = await fetch(`/backend/UserInfo/${id}`, {
-                    method: 'POST',
+               const data = await fetch(`/backend/savedAddBackend`, {
+                    method: 'GET',
                     credentials: 'include',
                     headers: {
                          'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                         product
-                    })
                })
-
                const response = await data.json();
                console.log('ye hai deta form check', response)
-               return response
-          } catch (error) {
+
+
+               // data available or not
+               if (response.success === false) {
+                    return { success: false, message: response.message }
+               }
+               return { success: true, message: response.message, data: response.data }
+          } 
+          // error or not
+          catch (error) {
                console.log(error)
+               return { success: false, message: error.message }
           }
      }
 
@@ -111,15 +135,21 @@ export default function Buy({ id }) {
                          const result = await datafind()
                          console.log(result.success)
                          
-                         if (result?.success === true) {
+                         if (result?.success === false) {
                               console.log('link laga agee ja ')
                               console.log('ye hai product info',product)
                               setProductInfo(product)
                               router.push('/client_side/orderPage/address')
                          }
-                         else {
+                         else if(result?.continue === false){
+                            
                               console.log('something wrong')
                               router.push('/frontend/Login/signup')
+                         }
+                         // if data available and continue is true
+                         else if (result?.success === true ){
+                              setSavedAddresses(result?.data)
+                              router.push('/client_side/existingAddressCheck')
                          }
                     }}
                >

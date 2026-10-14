@@ -15,8 +15,11 @@ export default function PaymentSection() {
     // -------------------------------------------------------------------------
     // DATA: Zustand — cart / product info (source: userUiState.productInfo)
     // -------------------------------------------------------------------------
+    const addressInfo = userUiState((state) => state.addressInfo)
     const productInfo = userUiState((state) => state.productInfo)
-
+    console.log("addressInfo", addressInfo)
+    console.log("productInfo", productInfo)
+    // 
     // -------------------------------------------------------------------------
     // DATA: Normalize productInfo → items[] (handles array or single object)
     // Debug: console.log("payment items", items) if list is empty/wrong
@@ -47,9 +50,9 @@ export default function PaymentSection() {
 
     return (
         // =====================================================================
-        // LAYOUT: Page shell — 5×6 grid, full viewport
+        // LAYOUT: Mobile/tablet stack (flex) | lg+ = 5×6 grid
         // =====================================================================
-        <div className="w-full h-screen grid grid-cols-5 grid-rows-6 gap-4 flex flex-col bg-[#F4F0E9] text-[#292524] p-4">
+        <div className="w-full min-h-screen flex flex-col gap-3 bg-payment-page-bg text-payment-text p-3 pb-6 sm:gap-4 sm:p-4 lg:grid lg:grid-cols-5 lg:grid-rows-6 lg:gap-4 lg:h-screen lg:pb-4 lg:overflow-hidden">
 
             {/* =================================================================
                 SECTION: Order Details (col 1–3, rows 1–4)
@@ -57,18 +60,20 @@ export default function PaymentSection() {
                 - Scrollable product line items (from items[])
                 - Footer total
                ================================================================= */}
-            <div className="col-span-3 row-span-4 border border-[#E7E0D6] rounded-xl h-full flex flex-col justify-between bg-white shadow-[0_1px_3px_rgba(41,37,36,0.06)] overflow-hidden">
+            <div className="order-1 flex min-h-0 flex-col justify-between overflow-hidden rounded-xl border border-payment-border bg-white shadow-payment-card lg:order-none lg:col-span-3 lg:row-span-4 lg:h-full">
                 {/* Order Details — header */}
-                <h1 className="text-xl font-medium p-4 text-[#292524] font-cantata">Order Details</h1>
-                <div className="w-full h-px bg-[#E7E0D6]" aria-hidden />
+                <h1 className="p-3 text-lg font-medium text-payment-text font-cantata sm:p-4 sm:text-xl">Order Details</h1>
+                <div className="w-full h-px bg-payment-border" aria-hidden />
 
                 {/* Order Details — product list (scroll) */}
-                <div className="flex flex-col gap-3 h-[60%] overflow-y-auto hide-scrollbar px-4 py-3 bg-[#F4F0E9]/40">
+                <div className="flex min-h-[200px] max-h-[50vh] flex-col gap-3 overflow-y-auto hide-scrollbar bg-payment-page-bg/40 px-3 py-3 sm:max-h-[55vh] sm:px-4 lg:h-[60%] lg:max-h-none">
                     {items.length === 0 ? (
-                        <p className="text-sm text-[#57534E] py-6 text-center">No items in this order yet.</p>
+                        <p className="text-sm text-payment-muted py-6 text-center">No items in this order yet.</p>
                     ) : (
                         items.map((item) => {
                             const price = item.Price ?? item.price ?? 0
+                            const size = item.size ?? ""
+                            const color = item.color ?? ""
                             const qty = item.quantity ?? 1
                             const key = item.productId ?? item.id ?? item.name
 
@@ -76,10 +81,10 @@ export default function PaymentSection() {
                                 /* Single product row — image, meta, line total */
                                 <div
                                     key={key}
-                                    className="w-full min-h-[100px] border border-[#E7E0D6] rounded-xl p-3 bg-white flex flex-row items-center gap-4 shadow-[0_1px_2px_rgba(41,37,36,0.04)]"
+                                    className="flex w-full min-h-[88px] flex-row items-center gap-3 rounded-xl border border-payment-border bg-white p-2.5 shadow-payment-row sm:min-h-[100px] sm:gap-4 sm:p-3"
                                 >
                                     {item.image ? (
-                                        <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg border border-[#E7E0D6] bg-white">
+                                        <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-payment-border bg-white sm:h-20 sm:w-20">
                                             <Image
                                                 src={item.image}
                                                 alt={item.name ?? "Product"}
@@ -89,17 +94,17 @@ export default function PaymentSection() {
                                             />
                                         </div>
                                     ) : (
-                                        <div className="h-20 w-20 shrink-0 rounded-lg bg-white border border-[#E7E0D6]" />
+                                        <div className="h-16 w-16 shrink-0 rounded-lg border border-payment-border bg-white sm:h-20 sm:w-20" />
                                     )}
                                     <div className="flex flex-1 flex-col gap-1 min-w-0">
-                                        <h2 className="text-sm font-semibold text-[#292524] truncate">{item.name}</h2>
-                                        <div className="flex flex-wrap gap-2 text-xs text-[#57534E]">
+                                        <h2 className="text-sm font-semibold text-payment-text truncate">{item.name}</h2>
+                                        <div className="flex flex-wrap gap-2 text-xs text-payment-muted">
                                             {item.color && <span>Color: {item.color}</span>}
                                             {item.size && <span>Size: {item.size}</span>}
                                             <span>Qty: {qty}</span>
                                         </div>
                                     </div>
-                                    <p className="text-sm font-semibold text-[#292524] shrink-0">
+                                    <p className="text-sm font-semibold text-payment-text shrink-0">
                                         ₹{(price * qty).toLocaleString("en-IN")}
                                     </p>
                                 </div>
@@ -109,9 +114,9 @@ export default function PaymentSection() {
                 </div>
 
                 {/* Order Details — total footer */}
-                <div className="w-full h-[20%] bg-white flex justify-between items-center px-5 py-4 border-t border-[#E7E0D6]">
-                    <h2 className="text-base font-medium text-[#292524]">Total Price</h2>
-                    <p className="text-lg font-semibold text-[#292524]">₹{total.toLocaleString("en-IN")}</p>
+                <div className="flex w-full shrink-0 items-center justify-between border-t border-payment-border bg-white px-4 py-3 sm:px-5 sm:py-4 lg:h-[20%]">
+                    <h2 className="text-sm font-medium text-payment-text sm:text-base">Total Price</h2>
+                    <p className="text-base font-semibold text-payment-text sm:text-lg">₹{total.toLocaleString("en-IN")}</p>
                 </div>
             </div>
 
@@ -119,15 +124,17 @@ export default function PaymentSection() {
                 SECTION: Shop with confidence (col 1–3, row 5)
                 - Static trust icons from confidenceItems
                ================================================================= */}
-            <div className="col-start-1 col-end-4 row-start-5 row-end-6 border border-[#E7E0D6] rounded-xl bg-white px-4 py-3 flex flex-col justify-center gap-2 shadow-[0_1px_3px_rgba(41,37,36,0.06)]">
-                <h1 className="text-sm font-semibold uppercase tracking-wide text-[#292524]">Shop with confidence</h1>
-                <div className="flex flex-row flex-wrap items-center justify-between gap-4 sm:gap-6">
+            <div className="order-4 flex flex-col justify-center gap-2 rounded-xl border border-payment-border bg-white px-3 py-3 shadow-payment-card sm:px-4 lg:order-none lg:col-start-1 lg:col-end-4 lg:row-start-5 lg:row-end-6">
+                <h1 className="text-xs font-semibold uppercase tracking-wide text-payment-text sm:text-sm">Shop with confidence</h1>
+                <div className="flex flex-row flex-nowrap items-center justify-between gap-2 sm:gap-4">
                     {confidenceItems.map(({ icon: Icon, label, success }) => (
-                        <div key={label} className="flex flex-row items-center gap-3 text-xs sm:text-sm text-[#57534E]">
-                            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white border border-[#E7E0D6]">
-                                <Icon className={`h-6 w-6 ${success ? "text-[#4D8057]" : "text-[#956B45]"}`} />
+                        <div key={label} className="flex min-w-0 flex-row items-center gap-2 text-xs text-payment-muted sm:gap-2.5 sm:text-sm">
+                            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-payment-border bg-white sm:h-12 sm:w-12">
+                                <Icon className={`h-5 w-5 sm:h-6 sm:w-6 ${success ? "text-payment-success" : "text-payment-accent"}`} />
                             </span>
-                            <span className={`font-medium ${success ? "text-[#4D8057]" : ""}`}>{label}</span>
+                            <div className="flex min-w-0 flex-col">
+                                <span className={`font-medium leading-tight ${success ? "text-payment-success" : ""}`}>{label}</span>
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -137,29 +144,29 @@ export default function PaymentSection() {
                 SECTION: Delivery Address (col 4–5, rows 1–2)
                 - Placeholder until address step / API is wired
                ================================================================= */}
-            <div className="col-start-4 col-end-6 row-start-1 row-end-3 border border-[#E7E0D6] rounded-xl bg-white shadow-[0_1px_3px_rgba(41,37,36,0.06)] flex flex-col overflow-hidden">
-                <h1 className="text-xl font-medium p-4 text-[#292524] font-cantata">Address</h1>
-                <div className="w-full h-px bg-[#E7E0D6]" aria-hidden />
+            <div className="order-2 flex flex-col overflow-hidden rounded-xl border border-payment-border bg-white shadow-payment-card lg:order-none lg:col-start-4 lg:col-end-6 lg:row-start-1 lg:row-end-3">
+                <h1 className="p-3 text-lg font-medium text-payment-text font-cantata sm:p-4 sm:text-xl">Address</h1>
+                <div className="w-full h-px bg-payment-border" aria-hidden />
 
-                <div className="flex-1 p-4 flex flex-col gap-3">
-                    <div className="flex flex-row items-start gap-3 rounded-xl border border-[#E7E0D6] bg-[#F4F0E9]/30 p-4">
-                        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white border border-[#E7E0D6]">
-                            <MapPin className="h-5 w-5 text-[#956B45]" />
+                <div className="flex flex-1 flex-col gap-3 p-3 sm:p-4">
+                    <div className="flex flex-row items-start gap-3 rounded-xl border border-payment-border bg-payment-page-bg/30 p-3 sm:p-4">
+                        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white border border-payment-border">
+                            <MapPin className="h-5 w-5 text-payment-accent" />
                         </span>
                         <div className="flex flex-col gap-2 min-w-0 flex-1">
-                            <p className="text-xs font-semibold uppercase tracking-wide text-[#292524]">Delivery address</p>
-                            <p className="text-sm text-[#57534E] leading-relaxed">
+                            <p className="text-xs font-semibold uppercase tracking-wide text-payment-text">Delivery address</p>
+                            <p className="text-sm text-payment-muted leading-relaxed">
                                 Your saved address will appear here after you complete the address step.
                             </p>
                             {/* Address placeholders — replace with real fields from store/API */}
-                            <div className="mt-1 flex flex-col gap-1.5 text-sm text-[#57534E]/80">
-                                <span className="h-9 rounded-lg border border-dashed border-[#E7E0D6] bg-white px-3 flex items-center">
+                            <div className="mt-1 flex flex-col gap-1.5 text-sm text-payment-muted/80">
+                                <span className="h-9 rounded-lg border border-dashed border-payment-border bg-white px-3 flex items-center">
                                     Full name
                                 </span>
-                                <span className="h-9 rounded-lg border border-dashed border-[#E7E0D6] bg-white px-3 flex items-center">
+                                <span className="h-9 rounded-lg border border-dashed border-payment-border bg-white px-3 flex items-center">
                                     Street, city, state — PIN
                                 </span>
-                                <span className="h-9 rounded-lg border border-dashed border-[#E7E0D6] bg-white px-3 flex items-center">
+                                <span className="h-9 rounded-lg border border-dashed border-payment-border bg-white px-3 flex items-center">
                                     Phone number
                                 </span>
                             </div>
@@ -173,29 +180,29 @@ export default function PaymentSection() {
                 - COD option (selected)
                 - Purchase CTA (wire onClick when checkout API ready)
                ================================================================= */}
-            <div className="col-start-4 col-end-6 row-start-3 row-end-6 border border-[#E7E0D6] rounded-xl bg-white shadow-[0_1px_3px_rgba(41,37,36,0.06)] flex flex-col overflow-hidden">
-                <h1 className="text-xl font-medium p-4 text-[#292524] font-cantata">Payment Method</h1>
-                <div className="w-full h-px bg-[#E7E0D6]" aria-hidden />
+            <div className="order-3 flex flex-col overflow-hidden rounded-xl border border-payment-border bg-white shadow-payment-card lg:order-none lg:col-start-4 lg:col-end-6 lg:row-start-3 lg:row-end-6">
+                <h1 className="p-3 text-lg font-medium text-payment-text font-cantata sm:p-4 sm:text-xl">Payment Method</h1>
+                <div className="w-full h-px bg-payment-border" aria-hidden />
 
-                <div className="flex flex-1 flex-col gap-3 p-4">
+                <div className="flex flex-1 flex-col gap-3 p-3 sm:p-4">
                     {/* Payment — COD radio (currently only option) */}
                     <label
-                        className="flex flex-row items-center gap-3 rounded-xl border border-[#956B45] bg-[#F1E8DC] p-4 cursor-default shadow-[0_1px_2px_rgba(41,37,36,0.04)]"
+                        className="flex cursor-default flex-row items-center gap-2.5 rounded-xl border border-payment-accent bg-payment-accent-soft p-3 shadow-payment-row sm:gap-3 sm:p-4"
                     >
-                        <input type="radio" name="payment" checked readOnly className="accent-[#956B45] h-4 w-4" />
-                        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white border border-[#E7E0D6]">
-                            <Banknote className="h-5 w-5 text-[#956B45]" />
+                        <input type="radio" name="payment" checked readOnly className="accent-payment-accent h-4 w-4" />
+                        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white border border-payment-border">
+                            <Banknote className="h-5 w-5 text-payment-accent" />
                         </span>
                         <div className="flex flex-col gap-0.5">
-                            <span className="text-sm font-semibold text-[#292524]">Cash on Delivery (COD)</span>
-                            <span className="text-xs text-[#57534E]">Pay when your order arrives</span>
+                            <span className="text-sm font-semibold text-payment-text">Cash on Delivery (COD)</span>
+                            <span className="text-xs text-payment-muted">Pay when your order arrives</span>
                         </div>
                     </label>
 
                     {/* Payment — submit */}
                     <button
                         type="button"
-                        className="mt-auto w-full rounded-xl bg-button py-3.5 text-sm font-semibold tracking-wide text-light shadow-sm transition hover:bg-button-hover active:scale-[0.98]"
+                        className="mt-2 w-full rounded-xl bg-button py-3.5 text-sm font-semibold tracking-wide text-light shadow-sm transition hover:bg-button-hover active:scale-[0.98] sm:mt-auto"
                     >
                         Purchase
                     </button>

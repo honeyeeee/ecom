@@ -5,6 +5,7 @@ const lists = create((set)=>({
     variants : null,
     products : null,
     productInfo : [],
+    addressInfo : null,
     
     itmes:async ()=>{
         // const data = await fetch('/backend/servers/occasion/lists')
@@ -31,8 +32,12 @@ const lists = create((set)=>({
         set({
             productInfo:productInfo
         })
+    },
+    setAddressInfo:(addressInfo)=>{
+        set({
+            addressInfo:addressInfo
+        })
     }
-
 }))
 
 export default lists

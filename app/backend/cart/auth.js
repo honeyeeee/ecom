@@ -6,6 +6,7 @@ import { NextResponse } from "next/server";
 export async function getAuthenticatedUser() {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
+  // console.log('token',token)
 
   if (!token) {
     return { error: NextResponse.json({ success: false, message: "Please log in" }, { status: 401 }) };
@@ -23,9 +24,10 @@ export async function getAuthenticatedUser() {
     if (!user) {
       return { error: NextResponse.json({ success: false, message: "User not found" }, { status: 404 }) };
     }
-
+   
     return { user };
-  } catch {
+  } catch (error) {
+    console.log('error in auth',error)
     return { error: NextResponse.json({ success: false, message: "Invalid or expired token" }, { status: 401 }) };
   }
 }

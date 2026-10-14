@@ -24,6 +24,17 @@
   /* Hover */
   --color-button-hover: #684F38;
 
+  /* Payment section */
+  --color-payment-page-bg: #F4F0E9;
+  --color-payment-text: #292524;
+  --color-payment-border: #E7E0D6;
+  --color-payment-muted: #57534E;
+  --color-payment-success: #4D8057;
+  --color-payment-accent: #956B45;
+  --color-payment-accent-soft: #F1E8DC;
+  --shadow-payment-card: 0 1px 3px rgb(41 37 36 / 0.06);
+  --shadow-payment-row: 0 1px 2px rgb(41 37 36 / 0.04);
+
   /* Fonts */
   --font-poppins: var(--font-poppins);
   --font-cantata: var(--font-cantata);

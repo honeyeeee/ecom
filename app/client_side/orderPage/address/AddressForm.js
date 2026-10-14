@@ -1,7 +1,9 @@
 "use client";
 
 import lists from "@/app/store/userUiState";
+import userUiState from "@/app/store/userUiState";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 const fields = [
   { name: "Full name", type: "text", span: "sm:col-span-1", autoComplete: "name" },
   { name: "Phone number", type: "tel", span: "sm:col-span-1", autoComplete: "tel" },
@@ -28,6 +30,8 @@ async function saveUserAddress(payload) {
 }
 
 export default function AddressForm() {
+  const router = useRouter();
+  const setAddressInfo = userUiState((state) => state.setAddressInfo)
   const productInfo = lists((state) => state.productInfo)
   console.log('ye hai product info',productInfo)
   const [submittedAddress, setSubmittedAddress] = useState(null);
@@ -37,10 +41,11 @@ export default function AddressForm() {
     const formData = new FormData(event.currentTarget);
     const raw = Object.fromEntries(formData.entries());
     setSubmittedAddress(raw);
+    setAddressInfo(raw);
 
     const apartment = raw["Apartment, suite, etc. (optional)"]?.trim();
     const street = raw["Street address"]?.trim() ?? "";
-    await saveUserAddress({
+    const { ok } = await saveUserAddress({
       name: raw["Full name"],
       phone: raw["Phone number"],
       email: raw["Email address"],
@@ -50,6 +55,9 @@ export default function AddressForm() {
       postalCode: raw["Postal code"],
       country: raw["Country / Region"],
     });
+    if (ok) {
+      router.push("/client_side/paymentSection");
+    }
   }
 
   return (

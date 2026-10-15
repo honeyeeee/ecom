@@ -8,7 +8,7 @@ const ordersSchema = new mongoose.Schema({
     },
     product:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"Product",
+        ref:"Prod",
         required:true,
     },
     mainProduct:{
@@ -47,5 +47,5 @@ const ordersSchema = new mongoose.Schema({
     },
 }, { timestamps: true })
 
-const Orders = mongoose.model("Orders", ordersSchema)
+const Orders = mongoose.models.Orders || mongoose.model("Orders", ordersSchema)
 export default Orders

@@ -7,6 +7,7 @@ import { getAuthenticatedUser } from "@/app/backend/cart/auth";
 
 export async function PATCH (request,{params}){
     try {
+        console.log('req aye kya')
         await connectDb();  
          const user = await getAuthenticatedUser();
     if(!user){
@@ -16,7 +17,7 @@ export async function PATCH (request,{params}){
     console.log(body);
 
     const {status} = body;
-    console.log(params);
+
     const {id} = await params;
     if(!id){
         return NextResponse.json({ error: "Order ID is required" }, { status: 400 } ,{product:false});
@@ -26,8 +27,12 @@ export async function PATCH (request,{params}){
     if(!findOrder){
         return NextResponse.json({ error: "Order not found" }, { status: 404 } ,{product:false});
     }
-    return NextResponse.json({ message: "Order updated successfully" }, { status: 200 } ,{product:true});
-    } catch (error) {
+    return NextResponse.json({ message: "Order updated successfully",
+        orders:findOrder
+     }, { status: 200 } ,{product:true});
+    } 
+    
+    catch (error) {
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 } ,{product:false});
     }
    

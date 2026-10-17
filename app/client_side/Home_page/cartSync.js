@@ -22,6 +22,8 @@ export default function CartSync() {
     (state) => state.setCartItems
   );
 
+
+  
   useEffect(() => {
     async function syncCart() {
       const cartData = await fetchCartData();

@@ -5,10 +5,16 @@ import connectDb from "@/app/backend/db/db";
 import Prod from "@/app/backend/db/productSchema";
 import searchStore from "@/app/store/search";
 import CartSync from "./cartSync";
-import Swipe from "../swiper/page";
+import Banner from "../swiper/banner";
+import NewArrival from "../swiper/newArrival";
+import Trending from "../swiper/trending";
+
 
 export default async function Home() {
   // data fetching for search database not by api
+
+  // fetch req to backend 
+
 
   return (
     <>
@@ -18,7 +24,7 @@ export default async function Home() {
       <CartSync />
       <main className="w-full min-h-screen">
         {/* Banner Swiper Section */}
-        <Swipe />
+        <Banner />
 
 
 
@@ -171,8 +177,8 @@ export default async function Home() {
           - Adjusted typography and spacing for clean mobile & tablet presentation.
           ========================================================================
         */}
-        <section className="min-h-screen py-12 sm:py-16 bg-body">
-          <div className="h-full w-full flex flex-col gap-8">
+        <section className="py-8 sm:py-16 bg-body">
+          <div className="w-full flex flex-col gap-4 sm:gap-8">
 
             {/* Header / Subheadings */}
             <div className="w-full px-4 sm:px-8">
@@ -201,155 +207,9 @@ export default async function Home() {
 
               </div>
             </div>
+            {/* New Arrivals Swiper Carousel */}
+            <NewArrival />
 
-            {/* Banner / Product Grid - responsive columns */}
-            <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-4 sm:px-8 lg:px-12 max-w-[1400px] mx-auto">
-
-              {/* Product 1 */}
-              <div className="relative h-[380px] sm:h-[420px] lg:h-[450px] w-full overflow-hidden group">
-                <Image
-                  src="/arrival/cat/men.png"
-                  fill
-                  alt="Everyday Shirts"
-                  className="object-center object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-
-                <div className="absolute inset-x-0 bottom-0 h-[50%] bg-gradient-to-t from-black/80 to-transparent" />
-
-                {/* Text section */}
-                <div className="absolute inset-0 flex flex-col justify-between p-4 sm:p-6 z-10">
-                  <div className="flex flex-col gap-2">
-                    <h1 className="text-2xl sm:text-3xl font-cantata capitalize font-extrabold">
-                      everyday <br /> <span className="font-light">Shirts</span>
-                    </h1>
-                    <p className="w-full max-w-[200px] capitalize text-xs sm:text-sm">
-                      upgrade your everyday style
-                    </p>
-                    <div className="font-light border-[0.02rem] border-black w-[20%] h-0"></div>
-                  </div>
-
-                  {/* Bottom CTA text */}
-                  <div className="flex flex-col gap-3">
-                    <h1 className="uppercase text-xs sm:text-sm text-body font-cantata flex flex-col gap-1">
-                      Up to <br />
-                      <span className="text-lg sm:text-xl font-bold">40% off</span>
-                    </h1>
-                    <button className="uppercase text-xs sm:text-sm text-body border-2 border-body w-fit h-fit px-4 py-1 hover:bg-body hover:text-black transition">
-                      shop now
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Product 2 */}
-              <div className="relative h-[380px] sm:h-[420px] lg:h-[450px] w-full overflow-hidden group">
-                <Image
-                  src="/arrival/cat/women.png"
-                  fill
-                  alt="Floral Muse"
-                  className="object-center object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-
-                <div className="absolute inset-x-0 bottom-0 h-[50%] bg-gradient-to-t from-black/80 to-transparent" />
-
-                {/* Text section */}
-                <div className="absolute inset-0 flex flex-col justify-between p-4 sm:p-6 z-10">
-                  <div className="flex flex-col gap-2">
-                    <h1 className="text-2xl sm:text-3xl font-cantata capitalize font-extrabold">
-                      Floral <br /> <span className="font-light">Muse</span>
-                    </h1>
-                    <p className="w-full max-w-[200px] capitalize text-xs sm:text-sm">
-                      Soft silhouettes, bold presence
-                    </p>
-                    <div className="font-light border-[0.02rem] border-black w-[20%] h-0"></div>
-                  </div>
-
-                  {/* Bottom CTA text */}
-                  <div className="flex flex-col gap-3">
-                    <h1 className="uppercase text-xs sm:text-sm text-body font-cantata flex flex-col gap-1">
-                      Up to <br />
-                      <span className="text-lg sm:text-xl font-bold">50% off</span>
-                    </h1>
-                    <button className="uppercase text-xs sm:text-sm text-body border-2 border-body w-fit h-fit px-4 py-1 hover:bg-body hover:text-black transition">
-                      shop now
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Product 3 */}
-              <div className="relative h-[380px] sm:h-[420px] lg:h-[450px] w-full overflow-hidden group">
-                <Image
-                  src="/arrival/cat/accessory.png"
-                  fill
-                  alt="Quiet Luxury"
-                  className="object-center object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-
-                <div className="absolute inset-x-0 bottom-0 h-[50%] bg-gradient-to-t from-black/80 to-transparent" />
-
-                {/* Text section */}
-                <div className="absolute inset-0 flex flex-col justify-between p-4 sm:p-6 z-10">
-                  <div className="flex flex-col gap-2">
-                    <h1 className="text-2xl sm:text-3xl font-cantata capitalize font-extrabold">
-                      Quiet <br /> <span className="font-light">Luxury</span>
-                    </h1>
-                    <p className="w-full max-w-[200px] capitalize text-xs sm:text-sm">
-                      Details that define your look
-                    </p>
-                    <div className="font-light border-[0.02rem] border-black w-[20%] h-0"></div>
-                  </div>
-
-                  {/* Bottom CTA text */}
-                  <div className="flex flex-col gap-3">
-                    <h1 className="uppercase text-xs sm:text-sm text-body font-cantata flex flex-col gap-1">
-                      Up to <br />
-                      <span className="text-lg sm:text-xl font-bold">60% off</span>
-                    </h1>
-                    <button className="uppercase text-xs sm:text-sm text-body border-2 border-body w-fit h-fit px-4 py-1 hover:bg-body hover:text-black transition">
-                      shop now
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Product 4 */}
-              <div className="relative h-[380px] sm:h-[420px] lg:h-[450px] w-full overflow-hidden group">
-                <Image
-                  src="/arrival/cat/shoes.png"
-                  fill
-                  alt="Classic Formals"
-                  className="object-center object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-
-                <div className="absolute inset-x-0 bottom-0 h-[50%] bg-gradient-to-t from-black/80 to-transparent" />
-
-                {/* Text section */}
-                <div className="absolute inset-0 flex flex-col justify-between p-4 sm:p-6 z-10">
-                  <div className="flex flex-col gap-2">
-                    <h1 className="text-2xl sm:text-3xl font-cantata capitalize font-extrabold">
-                      classic <br /> <span className="font-light">formals</span>
-                    </h1>
-                    <p className="w-full max-w-[200px] capitalize text-xs sm:text-sm">
-                      Step into timeless style
-                    </p>
-                    <div className="font-light border-[0.02rem] border-black w-[20%] h-0"></div>
-                  </div>
-
-                  {/* Bottom CTA text */}
-                  <div className="flex flex-col gap-3">
-                    <h1 className="uppercase text-xs sm:text-sm text-body font-cantata flex flex-col gap-1">
-                      Up to <br />
-                      <span className="text-lg sm:text-xl font-bold">30% off</span>
-                    </h1>
-                    <button className="uppercase text-xs sm:text-sm text-body border-2 border-body w-fit h-fit px-4 py-1 hover:bg-body hover:text-black transition">
-                      shop now
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-            </div>
 
           </div>
         </section>
@@ -388,146 +248,8 @@ export default async function Home() {
 
           </div>
 
-          {/* Products Grid - responsive 1, 2, 4 columns */}
-          <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-
-            {/* Card 1 */}
-            <div className="group">
-              <div className="relative h-[340px] sm:h-[380px] lg:h-[430px] overflow-hidden bg-[#e7d8c2]">
-                <img
-                  src="/products/product1.png"
-                  alt="Product"
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-
-                <span className="absolute top-4 left-4 bg-[#F1E5D3] px-3 py-1 text-[10px] uppercase tracking-[0.15em]">
-                  Trending
-                </span>
-
-                <button className="absolute bottom-4 right-4 bg-[#2B211B] text-[#F1E5D3] px-5 py-3 text-xs uppercase tracking-[0.15em] opacity-0 translate-y-3 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
-                  Add to bag
-                </button>
-              </div>
-
-              <div className="pt-5 flex justify-between">
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.2em] opacity-60">
-                    Men
-                  </p>
-                  <h3 className="mt-2 font-cantata text-base sm:text-lg">
-                    Relaxed Overshirt
-                  </h3>
-                </div>
-
-                <p className="text-sm">
-                  ₹1,499
-                </p>
-              </div>
-            </div>
-
-            {/* Card 2 */}
-            <div className="group">
-              <div className="relative h-[340px] sm:h-[380px] lg:h-[430px] overflow-hidden bg-[#e7d8c2]">
-                <img
-                  src="/products/product2.png"
-                  alt="Product"
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-
-                <span className="absolute top-4 left-4 bg-[#F1E5D3] px-3 py-1 text-[10px] uppercase tracking-[0.15em]">
-                  Bestseller
-                </span>
-
-                <button className="absolute bottom-4 right-4 bg-[#2B211B] text-[#F1E5D3] px-5 py-3 text-xs uppercase tracking-[0.15em] opacity-0 translate-y-3 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
-                  Add to bag
-                </button>
-              </div>
-
-              <div className="pt-5 flex justify-between">
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.2em] opacity-60">
-                    Women
-                  </p>
-                  <h3 className="mt-2 font-cantata text-base sm:text-lg">
-                    Soft Knit Top
-                  </h3>
-                </div>
-
-                <p className="text-sm">
-                  ₹1,299
-                </p>
-              </div>
-            </div>
-
-            {/* Card 3 */}
-            <div className="group">
-              <div className="relative h-[340px] sm:h-[380px] lg:h-[430px] overflow-hidden bg-[#e7d8c2]">
-                <img
-                  src="/products/product3.png"
-                  alt="Product"
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-
-                <span className="absolute top-4 left-4 bg-[#F1E5D3] px-3 py-1 text-[10px] uppercase tracking-[0.15em]">
-                  New
-                </span>
-
-                <button className="absolute bottom-4 right-4 bg-[#2B211B] text-[#F1E5D3] px-5 py-3 text-xs uppercase tracking-[0.15em] opacity-0 translate-y-3 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
-                  Add to bag
-                </button>
-              </div>
-
-              <div className="pt-5 flex justify-between">
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.2em] opacity-60">
-                    Accessories
-                  </p>
-                  <h3 className="mt-2 font-cantata text-base sm:text-lg">
-                    Minimal Watch
-                  </h3>
-                </div>
-
-                <p className="text-sm">
-                  ₹2,499
-                </p>
-              </div>
-            </div>
-
-            {/* Card 4 */}
-            <div className="group">
-              <div className="relative h-[340px] sm:h-[380px] lg:h-[430px] overflow-hidden bg-[#e7d8c2]">
-                <img
-                  src="/products/product4.png"
-                  alt="Product"
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-
-                <span className="absolute top-4 left-4 bg-[#F1E5D3] px-3 py-1 text-[10px] uppercase tracking-[0.15em]">
-                  Popular
-                </span>
-
-                <button className="absolute bottom-4 right-4 bg-[#2B211B] text-[#F1E5D3] px-5 py-3 text-xs uppercase tracking-[0.15em] opacity-0 translate-y-3 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
-                  Add to bag
-                </button>
-              </div>
-
-              <div className="pt-5 flex justify-between">
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.2em] opacity-60">
-                    Footwear
-                  </p>
-                  <h3 className="mt-2 font-cantata text-base sm:text-lg">
-                    Classic Sneakers
-                  </h3>
-                </div>
-
-                <p className="text-sm">
-                  ₹1,899
-                </p>
-              </div>
-            </div>
-
-          </div>
+          {/* Trending Products Swiper Carousel */}
+          <Trending />
 
         </section>
 

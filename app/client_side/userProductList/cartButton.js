@@ -17,11 +17,11 @@ export default function CartButton() {
       type="button"
       aria-label="Open cart"
       onClick={openCart}
-      className="relative hover:opacity-60 transition"
+      className="relative flex items-center justify-center w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-light hover:text-white transition shadow-sm"
     >
-      <ShoppingBag size={21} strokeWidth={1.7} />
+      <ShoppingBag size={19} strokeWidth={1.8} />
       {productsNumber > 0 && (
-        <span className="absolute -top-1.5 -right-1.5 min-w-4 h-4 px-0.5 rounded-full bg-accent text-white text-[9px] font-bold flex items-center justify-center">
+        <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-accent text-white text-[10px] font-bold flex items-center justify-center shadow-md ring-2 ring-button">
           {productsNumber > 99 ? "99+" : productsNumber}
         </span>
       )}
